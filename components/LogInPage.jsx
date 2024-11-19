@@ -1,21 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
 import {ButtonUI} from './UI/ButtonUI';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  setErrorMessage,
-  setIsError,
-  setLoginInput,
-  setPswdInput,
-} from '../redux/slices/logInPageSlice';
 
 export function LogInPage({navigation}) {
-  const dispatch = useDispatch();
-  const {logInInput, pswdInput, isError, errorMessage} = useSelector(
-    store => store.logInPage,
-  );
+  const [logInInput, setLoginInput] = useState('');
+  const [pswdInput, setPswdInput] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   function isRuEmail(str) {
     var emailText = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.ru$/);
@@ -24,21 +17,21 @@ export function LogInPage({navigation}) {
 
   function logBtnHandler() {
     if (isRuEmail(logInInput)) {
-      dispatch(setIsError(false));
+      setIsError(false);
       navigation.navigate('Home');
     } else {
-      dispatch(setIsError(true));
-      dispatch(setErrorMessage('Введите корректный e-mail'));
+      setIsError(true);
+      setErrorMessage('Введите корректный e-mail');
     }
   }
 
   function createBtnHandler() {
     if (isRuEmail(logInInput)) {
-      dispatch(setIsError(false));
+      setIsError(false);
       navigation.navigate('Home');
     } else {
-      dispatch(setIsError(true));
-      dispatch(setErrorMessage('Введите корректный e-mail'));
+      setIsError(true);
+      setErrorMessage('Введите корректный e-mail');
     }
   }
 
@@ -46,7 +39,7 @@ export function LogInPage({navigation}) {
     <View style={[styles.pageContainer, styles.pageContainerItemCenter]}>
       <ModalInfoWindow
         isOpened={isError}
-        setCloseFunc={() => dispatch(setIsError(false))}
+        setCloseFunc={() => setIsError(false)}
         message={errorMessage}
         title={'Ошибка'}
       />
@@ -63,14 +56,14 @@ export function LogInPage({navigation}) {
         <View style={{gap: 10}}>
           <TextInput
             textContentType="emailAddress"
-            onChangeText={text => dispatch(setLoginInput(text))}
+            onChangeText={text => setLoginInput(text)}
             placeholder="Логин"
             style={styles.inputTextCustom}
             value={logInInput}
           />
           <TextInput
             textContentType="password"
-            onChangeText={text => dispatch(setPswdInput(text))}
+            onChangeText={text => setPswdInput(text)}
             value={pswdInput}
             placeholder="Пароль"
             style={styles.inputTextCustom}

@@ -1,13 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, View, Text, TouchableHighlight, Image} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  setHelloMsg,
-  setIsOpenAddModal,
-  setNewTodoInput,
-} from '../redux/slices/homePageSlice';
+
 import {addNewTodo, toggleTodoChecked} from '../redux/slices/todosListSlice';
 import {ModalAddTodo} from './ModalAddTodo';
 
@@ -19,28 +15,29 @@ export const HomePage = () => {
       completed: false,
     };
     dispatcher(addNewTodo(newTodoObj));
-    dispatcher(setNewTodoInput(''));
-    dispatcher(setIsOpenAddModal(false));
+    setNewTodoInput('');
+    setIsOpenAddModal(false);
   };
 
-  const dispatcher = useDispatch();
-  const {helloMsg, isOpenAddModal, newTodoInput} = useSelector(
-    state => state.homePage,
-  );
+  const [helloMsg, setHelloMsg] = useState(true);
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  const [newTodoInput, setNewTodoInput] = useState('');
+
   const {todosList} = useSelector(state => state.todosList);
+  const dispatcher = useDispatch();
   return (
     <View style={[{flex: 1}, styles.pageContainer]}>
       <ModalInfoWindow
         isOpened={helloMsg}
-        setCloseFunc={() => dispatcher(setHelloMsg(false))}
+        setCloseFunc={() => setHelloMsg(false)}
         message={'Добро пожаловать в список задач :)'}
         title={'Успех!'}
       />
       <ModalAddTodo
         isOpened={isOpenAddModal}
-        setCloseFunc={() => dispatcher(setIsOpenAddModal(false))}
+        setCloseFunc={() => setIsOpenAddModal(false)}
         inputValue={newTodoInput}
-        setChangeTextFunc={text => dispatcher(setNewTodoInput(text))}
+        setChangeTextFunc={text => setNewTodoInput(text)}
         btnFuncHandler={() => btnAddTodoHandler()}
       />
       <ScrollView contentContainerStyle={{flex: 1, gap: 10}}>
@@ -69,7 +66,7 @@ export const HomePage = () => {
         ))}
         <View style={{alignItems: 'center'}}>
           <TouchableHighlight
-            onPress={() => dispatcher(setIsOpenAddModal(true))}
+            onPress={() => setIsOpenAddModal(true)}
             activeOpacity={0.9}
             underlayColor={'#874f1e'}
             style={[styles.buttonTouchableContainer]}>
