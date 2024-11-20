@@ -1,10 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {data} from '../../data/data';
+import {todosData} from '../../data/data';
 
 const todosListSlice = createSlice({
   name: 'todosList',
   initialState: {
-    todosList: data,
+    todosList: todosData,
   },
   reducers: {
     toggleTodoChecked(state, action) {
