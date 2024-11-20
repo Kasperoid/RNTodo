@@ -25,6 +25,7 @@ export const ModalInfoWindow = ({isOpened, setCloseFunc, message, title}) => {
             style={{
               textAlign: 'center',
               fontSize: 16,
+              color: 'black',
             }}>
             {message}
           </Text>

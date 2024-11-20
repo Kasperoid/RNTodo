@@ -111,4 +111,22 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 5,
   },
+
+  selectTagOptionContainer: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 30,
+    margin: 5,
+    borderColor: '#e28533',
+  },
+
+  avatarBtnContainer: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    borderColor: '#e28533',
+  },
 });
