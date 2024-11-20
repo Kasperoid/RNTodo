@@ -77,6 +77,7 @@ export const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 15,
     backgroundColor: 'white',
+    gap: 10,
   },
 
   todoItemsContainer: {

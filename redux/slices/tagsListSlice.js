@@ -3,7 +3,8 @@ import {tagsData} from '../../data/data';
 
 const initialState = {
   tags: tagsData,
-  activeTags: null,
+  activeTags: [],
+  selectedTag: null,
 };
 
 const tagsListSlice = createSlice({
@@ -19,8 +20,12 @@ const tagsListSlice = createSlice({
         tag => tag.userId === action.payload,
       );
     },
+
+    setSelectedTag(state, action) {
+      state.selectedTag = action.payload;
+    },
   },
 });
 
-export const {addNewTag, setActiveTags} = tagsListSlice.actions;
+export const {addNewTag, setActiveTags, setSelectedTag} = tagsListSlice.actions;
 export default tagsListSlice.reducer;

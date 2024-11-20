@@ -7,13 +7,17 @@ import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {ButtonUI} from './UI/ButtonUI';
-import {addNewTag, setActiveTags} from '../redux/slices/tagsListSlice';
+import {
+  addNewTag,
+  setActiveTags,
+  setSelectedTag,
+} from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {colorsSelection, iconsSelection} from '../data/data';
 import {SelectionTagList} from './SelectionTagList';
 import {AvatarBtn} from './AvatarBtn';
 
-export const HomePage = () => {
+export const HomePage = ({navigation}) => {
   const addBtnClickHandler = () => {
     dispatch(
       addNewTag({
@@ -25,6 +29,11 @@ export const HomePage = () => {
       }),
     );
     setTagInput('');
+  };
+
+  const onTagBtnHandler = tagId => {
+    dispatch(setSelectedTag(tagId));
+    navigation.navigate('TodosList');
   };
 
   const [tagInput, setTagInput] = useState('');
@@ -56,7 +65,7 @@ export const HomePage = () => {
         style={{
           alignItems: 'center',
         }}>
-        {activeTags.length !== 0 ? (
+        {activeTags && activeTags.length !== 0 ? (
           <FlatList
             data={activeTags}
             numColumns={2}
@@ -65,7 +74,7 @@ export const HomePage = () => {
               <TouchableHighlight
                 activeOpacity={0.9}
                 underlayColor={'#874f1e16'}
-                onPress={() => console.log(item.id)}
+                onPress={() => onTagBtnHandler(item.id)}
                 style={[{backgroundColor: 'white'}, styles.tagBtn]}>
                 <View
                   style={{
