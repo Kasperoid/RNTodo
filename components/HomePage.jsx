@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
-import {FlatList, Image, Text, TouchableHighlight, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../styles/styles';
 import BottomSheet, {
-  BottomSheetFlatList,
   BottomSheetTextInput,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {ButtonUI} from './UI/ButtonUI';
-import {addNewTag} from '../redux/slices/tagsListSlice';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {addNewTag, setActiveTags} from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {colorsSelection, iconsSelection} from '../data/data';
+import {SelectionTagList} from './SelectionTagList';
+import {AvatarBtn} from './AvatarBtn';
 
 export const HomePage = () => {
   const addBtnClickHandler = () => {
@@ -29,33 +29,18 @@ export const HomePage = () => {
 
   const [tagInput, setTagInput] = useState('');
   const [selectIconTag, setSelectIconTag] = useState('tag');
-  const [selectColorTag, setSelectColorTag] = useState(null);
+  const [selectColorTag, setSelectColorTag] = useState('grey');
   const dispatch = useDispatch();
-  const {tags} = useSelector(store => store.tagsList);
+  const {tags, activeTags} = useSelector(store => store.tagsList);
   const {activeUser} = useSelector(store => store.userInfo);
   const visibleName = activeUser?.nickName || activeUser.login;
+
+  useEffect(() => {
+    dispatch(setActiveTags(activeUser.id));
+  }, [tags, dispatch, activeUser.id]);
   return (
     <View style={styles.pageContainer}>
-      <View style={{alignItems: 'flex-start'}}>
-        <TouchableHighlight
-          underlayColor={'#874f1e16'}
-          onPress={() => console.log('!!!')}
-          style={{
-            backgroundColor: 'white',
-            borderWidth: 1,
-            borderRadius: 30,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 5,
-            borderColor: '#e28533',
-          }}>
-          {activeUser?.avatar ? (
-            <Image source={activeUser.avatar} />
-          ) : (
-            <MaterialIcons name="account" size={32} color="#e28533" />
-          )}
-        </TouchableHighlight>
-      </View>
+      <AvatarBtn userAvatar={activeUser?.avatar} />
       <View>
         <Text
           style={[
@@ -71,36 +56,42 @@ export const HomePage = () => {
         style={{
           alignItems: 'center',
         }}>
-        <FlatList
-          data={tags}
-          numColumns={2}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <TouchableHighlight
-              activeOpacity={0.9}
-              underlayColor={'#874f1e16'}
-              onPress={() => console.log()}
-              style={[{backgroundColor: 'white'}, styles.tagBtn]}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                }}>
-                <AntDesign name={item.icon} size={16} color={item.color} />
-                <Text
+        {activeTags.length !== 0 ? (
+          <FlatList
+            data={activeTags}
+            numColumns={2}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <TouchableHighlight
+                activeOpacity={0.9}
+                underlayColor={'#874f1e16'}
+                onPress={() => console.log(item.id)}
+                style={[{backgroundColor: 'white'}, styles.tagBtn]}>
+                <View
                   style={{
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: 'black',
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
                   }}>
-                  {item.title}
-                </Text>
-              </View>
-            </TouchableHighlight>
-          )}
-        />
+                  <AntDesign name={item.icon} size={16} color={item.color} />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: 'black',
+                    }}>
+                    {item.title}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            )}
+          />
+        ) : (
+          <Text style={{color: 'black', fontWeight: 600}}>
+            У тебя пока нет категорий...
+          </Text>
+        )}
       </View>
       <BottomSheet
         index={1}
@@ -140,69 +131,17 @@ export const HomePage = () => {
               />
             </View>
             <View>
-              <BottomSheetFlatList
+              <SelectionTagList
                 data={colorsSelection}
-                numColumns={Math.ceil(colorsSelection.length / 2)}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => (
-                  <TouchableHighlight
-                    activeOpacity={0.9}
-                    underlayColor={'#874f1e16'}
-                    onPress={() => setSelectColorTag(item.color)}
-                    style={{
-                      padding: 10,
-                      borderWidth: 1,
-                      borderRadius: 30,
-                      margin: 5,
-                      borderColor: '#e28533',
-                    }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 10,
-                      }}>
-                      <AntDesign
-                        name={selectIconTag}
-                        size={16}
-                        color={item.color}
-                      />
-                    </View>
-                  </TouchableHighlight>
-                )}
+                setFunc={setSelectColorTag}
+                type={'color'}
+                selectType={selectIconTag}
               />
-              <BottomSheetFlatList
+              <SelectionTagList
                 data={iconsSelection}
-                numColumns={Math.ceil(iconsSelection.length / 2)}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => (
-                  <TouchableHighlight
-                    activeOpacity={0.9}
-                    underlayColor={'#874f1e16'}
-                    onPress={() => setSelectIconTag(item.title)}
-                    style={{
-                      padding: 10,
-                      borderWidth: 1,
-                      borderRadius: 30,
-                      margin: 5,
-                      borderColor: '#e28533',
-                    }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 10,
-                      }}>
-                      <AntDesign
-                        name={item.title}
-                        size={16}
-                        color={selectColorTag}
-                      />
-                    </View>
-                  </TouchableHighlight>
-                )}
+                setFunc={setSelectIconTag}
+                type={'icon'}
+                selectType={selectColorTag}
               />
             </View>
           </View>

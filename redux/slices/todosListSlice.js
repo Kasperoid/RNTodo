@@ -1,11 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {todosData} from '../../data/data';
 
+const initialState = {
+  todosList: todosData,
+};
 const todosListSlice = createSlice({
   name: 'todosList',
-  initialState: {
-    todosList: todosData,
-  },
+  initialState: initialState,
   reducers: {
     toggleTodoChecked(state, action) {
       state.todosList = state.todosList.map(item => {
