@@ -3,8 +3,12 @@ import {View, Text, TextInput} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
 import {ButtonUI} from './UI/ButtonUI';
+import {useDispatch, useSelector} from 'react-redux';
+import {addNewUser, setActiveUser} from '../redux/slices/userInfoSlice';
 
 export function LogInPage({navigation}) {
+  const dispatch = useDispatch();
+  const {users} = useSelector(state => state.userInfo);
   const [logInInput, setLoginInput] = useState('');
   const [pswdInput, setPswdInput] = useState('');
   const [isError, setIsError] = useState(false);
@@ -15,19 +19,35 @@ export function LogInPage({navigation}) {
     return emailText.test(str);
   }
 
+  function isExistsUser(login, pswd) {
+    const result = users.filter(
+      item => item.login === login && item.pass === pswd,
+    );
+    return result.length === 0 ? false : result[0];
+  }
+
   function logBtnHandler() {
-    if (isRuEmail(logInInput)) {
+    const activeUser = isExistsUser(logInInput, pswdInput);
+    if (activeUser) {
       setIsError(false);
+      dispatch(setActiveUser(activeUser));
       navigation.navigate('Home');
     } else {
+      setErrorMessage('Неверный логин или пароль');
       setIsError(true);
-      setErrorMessage('Введите корректный e-mail');
     }
   }
 
   function createBtnHandler() {
     if (isRuEmail(logInInput)) {
       setIsError(false);
+      const newUser = {
+        id: Math.round(Math.random() * 1000),
+        pass: pswdInput,
+        login: logInInput,
+      };
+      dispatch(addNewUser(newUser));
+      dispatch(setActiveUser(newUser));
       navigation.navigate('Home');
     } else {
       setIsError(true);
@@ -49,6 +69,7 @@ export function LogInPage({navigation}) {
             styles.titleH1,
             {
               textAlign: 'center',
+              color: 'black',
             },
           ]}>
           Вход
@@ -76,7 +97,7 @@ export function LogInPage({navigation}) {
           <ButtonUI onPressFunc={() => logBtnHandler()} type={'Primary'}>
             Войти
           </ButtonUI>
-          <ButtonUI onPressFunc={createBtnHandler} type={'Secondary'}>
+          <ButtonUI onPressFunc={() => createBtnHandler()} type={'Secondary'}>
             Создать
           </ButtonUI>
         </View>

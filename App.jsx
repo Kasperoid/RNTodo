@@ -51,7 +51,7 @@ export default function App() {
       <Provider store={store}>
         <PersistGate loading={<Text>Загрузка...</Text>} persistor={persistor}>
           <NavigationContainer>
-            <Navigator initialRouteName="Home">
+            <Navigator initialRouteName="LogIn">
               <Screen
                 name="LogIn"
                 component={LogInPage}
