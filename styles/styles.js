@@ -21,8 +21,10 @@ export const styles = StyleSheet.create({
   },
 
   titleH1: {
+    color: 'black',
     fontSize: 26,
     fontWeight: 600,
+    marginBottom: 16,
   },
 
   inputTextCustom: {
@@ -98,5 +100,15 @@ export const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 15,
     backgroundColor: '#e28533',
+  },
+
+  tagBtn: {
+    width: 150,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: '#e28533',
+    padding: 10,
+    marginHorizontal: 5,
+    marginVertical: 5,
   },
 });
