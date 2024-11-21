@@ -123,11 +123,15 @@ export const styles = StyleSheet.create({
 
   avatarBtnContainer: {
     backgroundColor: 'white',
-    borderWidth: 1,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
-    borderColor: '#e28533',
+  },
+
+  commonText: {
+    color: 'black',
+    fontWeight: 600,
+    fontSize: 16,
   },
 });

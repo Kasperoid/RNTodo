@@ -7,7 +7,7 @@ import {
   setActiveTodos,
   toggleTodoChecked,
 } from '../redux/slices/todosListSlice';
-import {ModalAddTodo} from './ModalAddTodo';
+import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const TodosList = () => {
@@ -37,7 +37,7 @@ export const TodosList = () => {
   }, [dispatcher, selectedTag, todosList]);
   return (
     <View style={[{flex: 1}, styles.pageContainer]}>
-      <ModalAddTodo
+      <ModalInput
         isOpened={isOpenAddModal}
         setCloseFunc={() => setIsOpenAddModal(false)}
         inputValue={newTodoInput}

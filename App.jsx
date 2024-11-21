@@ -9,6 +9,7 @@ import {HomePage} from './components/HomePage';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Text} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {UserSettingsPage} from './components/UserSettingsPage';
 // import {
 //   createTable,
 //   getDBConnection,
@@ -66,6 +67,11 @@ export default function App() {
                 name="TodosList"
                 options={{headerShown: false}}
                 component={TodosList}
+              />
+              <Screen
+                name="UserSettings"
+                options={{headerShown: false}}
+                component={UserSettingsPage}
               />
             </Navigator>
           </NavigationContainer>

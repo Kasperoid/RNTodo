@@ -49,7 +49,10 @@ export const HomePage = ({navigation}) => {
   }, [tags, dispatch, activeUser.id]);
   return (
     <View style={styles.pageContainer}>
-      <AvatarBtn userAvatar={activeUser?.avatar} />
+      <AvatarBtn
+        userAvatar={activeUser?.avatar}
+        btnPressFunc={() => navigation.navigate('UserSettings')}
+      />
       <View>
         <Text
           style={[
