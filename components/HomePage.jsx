@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../styles/styles';
@@ -36,12 +36,40 @@ export const HomePage = ({navigation}) => {
     navigation.navigate('TodosList');
   };
 
+  const openBottomMenuBtnHandler = () => {
+    isBottomVisible
+      ? bottomMenuRef.current.snapToIndex(0)
+      : bottomMenuRef.current.expand();
+
+    isBottomVisible
+      ? bottomInputRef.current.blur()
+      : bottomInputRef.current.focus();
+
+    setIsBottomVisible(prevState => !prevState);
+  };
+
+  const onChangeBottomMenu = index => {
+    if (index === 3) {
+      bottomInputRef.current.focus();
+      setIsBottomVisible(true);
+    } else {
+      bottomInputRef.current.blur();
+      setIsBottomVisible(false);
+    }
+  };
+
   const [tagInput, setTagInput] = useState('');
   const [selectIconTag, setSelectIconTag] = useState('tag');
   const [selectColorTag, setSelectColorTag] = useState('grey');
+  const [isBottomVisible, setIsBottomVisible] = useState(false);
+
   const dispatch = useDispatch();
   const {tags, activeTags} = useSelector(store => store.tagsList);
   const {activeUser} = useSelector(store => store.userInfo);
+
+  const bottomMenuRef = useRef(null);
+  const bottomInputRef = useRef(null);
+
   const visibleName = activeUser?.nickName || activeUser.login;
 
   useEffect(() => {
@@ -106,6 +134,8 @@ export const HomePage = ({navigation}) => {
         )}
       </View>
       <BottomSheet
+        onChange={onChangeBottomMenu}
+        ref={bottomMenuRef}
         index={1}
         snapPoints={['10%', '20%', '60%']}
         style={styles.pageContainer}>
@@ -113,17 +143,27 @@ export const HomePage = ({navigation}) => {
           style={{
             gap: 10,
           }}>
-          <Text
-            style={[
-              styles.titleH1,
-              {
-                textAlign: 'center',
-                color: '#e28533',
-              },
-            ]}>
-            Создай новый тег
-          </Text>
+          <View style={{alignItems: 'center'}}>
+            <TouchableHighlight
+              underlayColor={'#874f1e16'}
+              style={{borderRadius: 15}}
+              onPress={openBottomMenuBtnHandler}>
+              <Text
+                style={[
+                  styles.titleH1,
+                  {
+                    textAlign: 'center',
+                    color: '#e28533',
+                    marginBottom: 0,
+                    padding: 10,
+                  },
+                ]}>
+                Создай новый тег
+              </Text>
+            </TouchableHighlight>
+          </View>
           <BottomSheetTextInput
+            ref={bottomInputRef}
             style={styles.inputTextCustom}
             placeholder="Название"
             value={tagInput}

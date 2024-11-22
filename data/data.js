@@ -74,6 +74,8 @@ export const tagsData = [
   },
 ];
 
+// в качестве id - почта
+
 export const usersData = [
   {id: 101, pass: '1234', login: 'ivanu9053@gmail.ru'},
   {id: 102, nickName: 'Dima', pass: '4321', login: 'dimad5642@mail.ru'},

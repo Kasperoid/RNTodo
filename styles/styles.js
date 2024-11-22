@@ -15,9 +15,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '80%',
     minHeight: 300,
-    boxShadow: '0px 5px 10px 2px rgba(226, 133, 51, 0.2)',
     borderRadius: 10,
     padding: 15,
+    backgroundColor: 'white',
+    shadowColor: '#e28533',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+
+    elevation: 17,
   },
 
   titleH1: {

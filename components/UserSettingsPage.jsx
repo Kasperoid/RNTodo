@@ -15,7 +15,7 @@ export const UserSettingsPage = () => {
   const dispatch = useDispatch();
   const {activeUser} = useSelector(store => store.userInfo);
   const [activeBtn, setActiveBtn] = useState(false);
-  const [isOpenModal, setIsOpenModal] = useState(true);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [inputNickName, setInputNickName] = useState('');
   const nickNameText = activeUser.nickName || '-';
   return (
