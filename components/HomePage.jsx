@@ -16,6 +16,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {IconBtn} from './IconBtn';
 import {setActiveUser} from '../redux/slices/userInfoSlice';
 import {BottomMenu} from './BottomMenu';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -50,12 +51,14 @@ export const HomePage = ({navigation}) => {
     dispatch(setActiveTags(activeUser?.id));
   }, [tags, dispatch, activeUser?.id]);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', backAction);
+      };
+    }, [backAction]),
+  );
 
   return (
     <View style={styles.pageContainer}>
@@ -75,7 +78,6 @@ export const HomePage = ({navigation}) => {
           btnPressFunc={() => backAction()}
         />
       </View>
-
       <View>
         <Text
           style={[
