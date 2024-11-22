@@ -1,5 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Text, TouchableHighlight, View} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  Alert,
+  BackHandler,
+  FlatList,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../styles/styles';
 import BottomSheet, {
@@ -58,6 +65,22 @@ export const HomePage = ({navigation}) => {
     }
   };
 
+  const exitBtnHandler = useCallback(() => {
+    navigation.navigate('LogIn');
+  }, [navigation]);
+
+  const backAction = useCallback(() => {
+    Alert.alert('Стойте!', 'Вы действительно хотите выйти?', [
+      {text: 'Да', onPress: exitBtnHandler},
+      {
+        text: 'Нет',
+        onPress: () => null,
+        style: 'cancel',
+      },
+    ]);
+    return true;
+  }, [exitBtnHandler]);
+
   const [tagInput, setTagInput] = useState('');
   const [selectIconTag, setSelectIconTag] = useState('tag');
   const [selectColorTag, setSelectColorTag] = useState('grey');
@@ -75,6 +98,14 @@ export const HomePage = ({navigation}) => {
   useEffect(() => {
     dispatch(setActiveTags(activeUser.id));
   }, [tags, dispatch, activeUser.id]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+    };
+  }, [backAction]);
+
   return (
     <View style={styles.pageContainer}>
       <AvatarBtn

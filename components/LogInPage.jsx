@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
@@ -31,6 +31,8 @@ export function LogInPage({navigation}) {
     if (activeUser) {
       setIsError(false);
       dispatch(setActiveUser(activeUser));
+      setLoginInput('');
+      setPswdInput('');
       navigation.navigate('Home');
     } else {
       setErrorMessage('Неверный логин или пароль');
@@ -48,12 +50,18 @@ export function LogInPage({navigation}) {
       };
       dispatch(addNewUser(newUser));
       dispatch(setActiveUser(newUser));
+      setLoginInput('');
+      setPswdInput('');
       navigation.navigate('Home');
     } else {
       setIsError(true);
       setErrorMessage('Введите корректный e-mail');
     }
   }
+
+  useEffect(() => {
+    dispatch(setActiveUser(null));
+  }, [dispatch]);
 
   return (
     <View style={[styles.pageContainer, styles.pageContainerItemCenter]}>
