@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
 import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
 import {addNewUser, setActiveUser} from '../redux/slices/userInfoSlice';
+import uuid from 'react-native-uuid';
 
 export function LogInPage({navigation}) {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export function LogInPage({navigation}) {
     if (isRuEmail(logInInput)) {
       setIsError(false);
       const newUser = {
-        id: Math.round(Math.random() * 1000),
+        id: uuid.v4(),
         pass: pswdInput,
         login: logInInput,
       };

@@ -9,11 +9,12 @@ import {
 } from '../redux/slices/todosListSlice';
 import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import uuid from 'react-native-uuid';
 
 export const TodosList = () => {
   const btnAddTodoHandler = () => {
     const newTodoObj = {
-      id: Math.round(Math.random() * 100),
+      id: uuid.v4(),
       userId: activeUser.id,
       title: newTodoInput,
       completed: false,

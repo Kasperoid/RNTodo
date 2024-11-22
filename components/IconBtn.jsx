@@ -10,11 +10,6 @@ export const IconBtn = ({iconComp, btnPressFunc}) => {
         onPress={btnPressFunc}
         style={styles.avatarBtnContainer}>
         {iconComp}
-        {/* {userAvatar ? (
-          <Image source={userAvatar} />
-        ) : (
-          <FontAwesome6 name="circle-user" size={32} color="#e28533" />
-        )} */}
       </TouchableHighlight>
     </View>
   );

@@ -12,12 +12,13 @@ import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
 import {addNewTag} from '../redux/slices/tagsListSlice';
 import {colorsSelection, iconsSelection} from '../data/data';
+import uuid from 'react-native-uuid';
 
 export const BottomMenu = () => {
   const addBtnClickHandler = () => {
     dispatch(
       addNewTag({
-        id: Math.round(Math.random() * 100),
+        id: uuid.v4(),
         title: tagInput,
         userId: activeUser.id,
         color: selectColorTag,
