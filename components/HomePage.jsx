@@ -23,6 +23,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {colorsSelection, iconsSelection} from '../data/data';
 import {SelectionTagList} from './SelectionTagList';
 import {AvatarBtn} from './AvatarBtn';
+import {setActiveUser} from '../redux/slices/userInfoSlice';
 
 export const HomePage = ({navigation}) => {
   const addBtnClickHandler = () => {
@@ -67,7 +68,8 @@ export const HomePage = ({navigation}) => {
 
   const exitBtnHandler = useCallback(() => {
     navigation.navigate('LogIn');
-  }, [navigation]);
+    dispatch(setActiveUser(null));
+  }, [navigation, dispatch]);
 
   const backAction = useCallback(() => {
     Alert.alert('Стойте!', 'Вы действительно хотите выйти?', [
@@ -93,11 +95,11 @@ export const HomePage = ({navigation}) => {
   const bottomMenuRef = useRef(null);
   const bottomInputRef = useRef(null);
 
-  const visibleName = activeUser?.nickName || activeUser.login;
+  const visibleName = activeUser?.nickName || activeUser?.login;
 
   useEffect(() => {
-    dispatch(setActiveTags(activeUser.id));
-  }, [tags, dispatch, activeUser.id]);
+    dispatch(setActiveTags(activeUser?.id));
+  }, [tags, dispatch, activeUser?.id]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', backAction);

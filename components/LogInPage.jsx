@@ -59,10 +59,6 @@ export function LogInPage({navigation}) {
     }
   }
 
-  useEffect(() => {
-    dispatch(setActiveUser(null));
-  }, [dispatch]);
-
   return (
     <View style={[styles.pageContainer, styles.pageContainerItemCenter]}>
       <ModalInfoWindow
