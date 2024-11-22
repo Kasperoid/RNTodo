@@ -4,6 +4,7 @@ import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addNewTodo,
+  deleteTodo,
   setActiveTodos,
   setSelectedTodo,
   toggleTodoChecked,
@@ -29,6 +30,10 @@ export const TodosList = ({navigation}) => {
   const selectTodoHandler = todoId => {
     dispatcher(setSelectedTodo(todoId));
     navigation.navigate('TodoDesc');
+  };
+
+  const deleteTodoHandler = todoId => {
+    dispatcher(deleteTodo(todoId));
   };
 
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -72,7 +77,7 @@ export const TodosList = ({navigation}) => {
                 </TouchableHighlight>
                 <View
                   style={{
-                    width: '90%',
+                    width: '75%',
                   }}>
                   <Text
                     style={{
@@ -86,6 +91,11 @@ export const TodosList = ({navigation}) => {
                     {item.title}
                   </Text>
                 </View>
+                <TouchableHighlight
+                  underlayColor={'inherit'}
+                  onPress={() => deleteTodoHandler(item.id)}>
+                  <AntDesign name="closecircle" size={20} color="#e28533" />
+                </TouchableHighlight>
               </View>
             </TouchableHighlight>
           ))

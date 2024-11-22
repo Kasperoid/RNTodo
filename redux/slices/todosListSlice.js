@@ -45,6 +45,12 @@ const todosListSlice = createSlice({
         state.selectedTodo,
       ];
     },
+
+    deleteTodo(state, action) {
+      state.todosList = [
+        ...state.todosList.filter(todo => todo.id !== action.payload),
+      ];
+    },
   },
 });
 
@@ -54,5 +60,6 @@ export const {
   setActiveTodos,
   setSelectedTodo,
   setDescTodo,
+  deleteTodo,
 } = todosListSlice.actions;
 export default todosListSlice.reducer;
