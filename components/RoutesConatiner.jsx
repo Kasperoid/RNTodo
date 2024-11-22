@@ -6,6 +6,7 @@ import {HomePage} from './HomePage';
 import {TodosList} from './TodosList';
 import {UserSettingsPage} from './UserSettingsPage';
 import {useSelector} from 'react-redux';
+import {TodoDescPage} from './TodoDescPage';
 
 export const RoutesContainer = () => {
   const {Navigator, Screen} = createStackNavigator();
@@ -32,6 +33,11 @@ export const RoutesContainer = () => {
           name="UserSettings"
           options={{headerShown: false}}
           component={UserSettingsPage}
+        />
+        <Screen
+          name="TodoDesc"
+          options={{headerShown: false}}
+          component={TodoDescPage}
         />
       </Navigator>
     </NavigationContainer>

@@ -4,6 +4,7 @@ export const todosData = [
     userId: 101,
     title: 'delectus aut autem',
     completed: false,
+    desc: 'Вот такое описание прикольное',
     tags: [112],
   },
   {
@@ -11,6 +12,7 @@ export const todosData = [
     userId: 102,
     title: 'quis ut nam facilis et officia qui',
     completed: false,
+    desc: 'Тут описание, если что',
     tags: [110],
   },
   {
@@ -73,8 +75,6 @@ export const tagsData = [
     icon: 'questioncircle',
   },
 ];
-
-// в качестве id - почта
 
 export const usersData = [
   {id: 101, pass: '1234', login: 'ivanu9053@gmail.ru'},

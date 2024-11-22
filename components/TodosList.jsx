@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View, Text, TouchableHighlight, Image} from 'react-native';
+import {ScrollView, View, Text, TouchableHighlight} from 'react-native';
 import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addNewTodo,
   setActiveTodos,
+  setSelectedTodo,
   toggleTodoChecked,
 } from '../redux/slices/todosListSlice';
 import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import uuid from 'react-native-uuid';
 
-export const TodosList = () => {
+export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {
     const newTodoObj = {
       id: uuid.v4(),
@@ -23,6 +24,11 @@ export const TodosList = () => {
     dispatcher(addNewTodo(newTodoObj));
     setNewTodoInput('');
     setIsOpenAddModal(false);
+  };
+
+  const selectTodoHandler = todoId => {
+    dispatcher(setSelectedTodo(todoId));
+    navigation.navigate('TodoDesc');
   };
 
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -48,34 +54,40 @@ export const TodosList = () => {
       <ScrollView contentContainerStyle={{flex: 1, gap: 10}}>
         {activeTodos && activeTodos.length !== 0 ? (
           activeTodos.map(item => (
-            <View key={item.id} style={styles.todoItemsContainer}>
-              <TouchableHighlight
-                style={styles.buttonCheckedContainer}
-                underlayColor={'inherit'}
-                onPress={() => dispatcher(toggleTodoChecked(item.id))}>
-                <View style={{width: 15, height: 15}}>
-                  {item.completed && (
-                    <AntDesign name="check" size={16} color="#e28533" />
-                  )}
-                </View>
-              </TouchableHighlight>
-              <View
-                style={{
-                  width: '90%',
-                }}>
-                <Text
+            <TouchableHighlight
+              activeOpacity={0.9}
+              underlayColor={'#874f1e16'}
+              key={item.id}
+              onPress={() => selectTodoHandler(item.id)}>
+              <View style={styles.todoItemsContainer}>
+                <TouchableHighlight
+                  style={styles.buttonCheckedContainer}
+                  underlayColor={'inherit'}
+                  onPress={() => dispatcher(toggleTodoChecked(item.id))}>
+                  <View style={{width: 15, height: 15}}>
+                    {item.completed && (
+                      <AntDesign name="check" size={16} color="#e28533" />
+                    )}
+                  </View>
+                </TouchableHighlight>
+                <View
                   style={{
-                    color: item.completed ? 'grey' : 'black',
-                    fontWeight: 600,
-                    fontSize: 16,
-                    textDecorationLine: item.completed
-                      ? 'line-through'
-                      : 'none',
+                    width: '90%',
                   }}>
-                  {item.title}
-                </Text>
+                  <Text
+                    style={{
+                      color: item.completed ? 'grey' : 'black',
+                      fontWeight: 600,
+                      fontSize: 16,
+                      textDecorationLine: item.completed
+                        ? 'line-through'
+                        : 'none',
+                    }}>
+                    {item.title}
+                  </Text>
+                </View>
               </View>
-            </View>
+            </TouchableHighlight>
           ))
         ) : (
           <View>

@@ -4,6 +4,7 @@ import {todosData} from '../../data/data';
 const initialState = {
   todosList: todosData,
   activeTodos: [],
+  selectedTodo: null,
 };
 const todosListSlice = createSlice({
   name: 'todosList',
@@ -30,9 +31,28 @@ const todosListSlice = createSlice({
         todo.tags.includes(action.payload),
       );
     },
+
+    setSelectedTodo(state, action) {
+      state.selectedTodo = state.activeTodos.filter(
+        todo => todo.id === action.payload,
+      )[0];
+    },
+
+    setDescTodo(state, action) {
+      state.selectedTodo = {...state.selectedTodo, desc: action.payload};
+      state.todosList = [
+        ...state.todosList.filter(todo => todo.id !== state.selectedTodo.id),
+        state.selectedTodo,
+      ];
+    },
   },
 });
 
-export const {toggleTodoChecked, addNewTodo, setActiveTodos} =
-  todosListSlice.actions;
+export const {
+  toggleTodoChecked,
+  addNewTodo,
+  setActiveTodos,
+  setSelectedTodo,
+  setDescTodo,
+} = todosListSlice.actions;
 export default todosListSlice.reducer;

@@ -129,13 +129,7 @@ export const BottomMenu = () => {
               type={'color'}
               selectType={selectIconTag}
             />
-            <View
-              style={{
-                height: 1,
-                backgroundColor: '#e28533',
-                marginVertical: 10,
-              }}
-            />
+            <View style={styles.separator} />
             <SelectionTagList
               data={iconsSelection}
               setFunc={setSelectIconTag}

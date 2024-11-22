@@ -143,4 +143,11 @@ export const styles = StyleSheet.create({
     fontWeight: 600,
     fontSize: 16,
   },
+
+  separator: {
+    height: 1,
+    backgroundColor: '#e28533',
+    marginVertical: 10,
+    opacity: 0.4,
+  },
 });
