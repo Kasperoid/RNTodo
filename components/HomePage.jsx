@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   Alert,
   BackHandler,
@@ -10,62 +10,17 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../styles/styles';
-import BottomSheet, {
-  BottomSheetTextInput,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import {ButtonUI} from './UI/ButtonUI';
-import {
-  addNewTag,
-  setActiveTags,
-  setSelectedTag,
-} from '../redux/slices/tagsListSlice';
+import {setActiveTags, setSelectedTag} from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {colorsSelection, iconsSelection} from '../data/data';
-import {SelectionTagList} from './SelectionTagList';
 import {IconBtn} from './IconBtn';
 import {setActiveUser} from '../redux/slices/userInfoSlice';
+import {BottomMenu} from './BottomMenu';
 
 export const HomePage = ({navigation}) => {
-  const addBtnClickHandler = () => {
-    dispatch(
-      addNewTag({
-        id: Math.round(Math.random() * 100),
-        title: tagInput,
-        userId: activeUser.id,
-        color: selectColorTag,
-        icon: selectIconTag,
-      }),
-    );
-    setTagInput('');
-  };
-
   const onTagBtnHandler = tagId => {
     dispatch(setSelectedTag(tagId));
     navigation.navigate('TodosList');
-  };
-
-  const openBottomMenuBtnHandler = () => {
-    isBottomVisible
-      ? bottomMenuRef.current.snapToIndex(0)
-      : bottomMenuRef.current.expand();
-
-    isBottomVisible
-      ? bottomInputRef.current.blur()
-      : bottomInputRef.current.focus();
-
-    setIsBottomVisible(prevState => !prevState);
-  };
-
-  const onChangeBottomMenu = index => {
-    if (index === 3) {
-      bottomInputRef.current.focus();
-      setIsBottomVisible(true);
-    } else {
-      bottomInputRef.current.blur();
-      setIsBottomVisible(false);
-    }
   };
 
   const exitBtnHandler = useCallback(() => {
@@ -85,17 +40,9 @@ export const HomePage = ({navigation}) => {
     return true;
   }, [exitBtnHandler]);
 
-  const [tagInput, setTagInput] = useState('');
-  const [selectIconTag, setSelectIconTag] = useState('tag');
-  const [selectColorTag, setSelectColorTag] = useState('grey');
-  const [isBottomVisible, setIsBottomVisible] = useState(false);
-
   const dispatch = useDispatch();
   const {tags, activeTags} = useSelector(store => store.tagsList);
   const {activeUser} = useSelector(store => store.userInfo);
-
-  const bottomMenuRef = useRef(null);
-  const bottomInputRef = useRef(null);
 
   const visibleName = activeUser?.nickName || activeUser?.login;
 
@@ -181,75 +128,7 @@ export const HomePage = ({navigation}) => {
           </Text>
         )}
       </View>
-      <BottomSheet
-        onChange={onChangeBottomMenu}
-        ref={bottomMenuRef}
-        index={1}
-        snapPoints={['10%', '20%', '60%']}
-        style={styles.pageContainer}>
-        <BottomSheetView
-          style={{
-            gap: 10,
-          }}>
-          <View style={{alignItems: 'center'}}>
-            <TouchableHighlight
-              underlayColor={'#874f1e16'}
-              style={{borderRadius: 15}}
-              onPress={openBottomMenuBtnHandler}>
-              <Text
-                style={[
-                  styles.titleH1,
-                  {
-                    textAlign: 'center',
-                    color: '#e28533',
-                    marginBottom: 0,
-                    padding: 10,
-                  },
-                ]}>
-                Создай новый тег
-              </Text>
-            </TouchableHighlight>
-          </View>
-          <BottomSheetTextInput
-            ref={bottomInputRef}
-            style={styles.inputTextCustom}
-            placeholder="Название"
-            value={tagInput}
-            onChangeText={text => setTagInput(text)}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <View style={{flex: 1, alignItems: 'center'}}>
-              <AntDesign
-                name={selectIconTag}
-                size={64}
-                color={selectColorTag}
-              />
-            </View>
-            <View>
-              <SelectionTagList
-                data={colorsSelection}
-                setFunc={setSelectColorTag}
-                type={'color'}
-                selectType={selectIconTag}
-              />
-              <SelectionTagList
-                data={iconsSelection}
-                setFunc={setSelectIconTag}
-                type={'icon'}
-                selectType={selectColorTag}
-              />
-            </View>
-          </View>
-          <ButtonUI onPressFunc={() => addBtnClickHandler()} type="Primary">
-            Добавить
-          </ButtonUI>
-        </BottomSheetView>
-      </BottomSheet>
+      <BottomMenu />
     </View>
   );
 };

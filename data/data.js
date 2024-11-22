@@ -88,7 +88,12 @@ export const colorsSelection = [
   {id: Math.round(Math.random() * 100), title: 'Желтый', color: 'yellow'},
   {id: Math.round(Math.random() * 100), title: 'Серый', color: 'grey'},
   {id: Math.round(Math.random() * 100), title: 'Розовый', color: 'pink'},
-  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'orange'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'cyan'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'lightblue'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'green'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'lighgreen'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'purple'},
+  {id: Math.round(Math.random() * 100), title: 'Оранжевый', color: 'gold'},
 ];
 
 export const iconsSelection = [
