@@ -3,6 +3,7 @@ import {
   Alert,
   BackHandler,
   FlatList,
+  Image,
   Text,
   TouchableHighlight,
   View,
@@ -20,9 +21,10 @@ import {
   setSelectedTag,
 } from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {colorsSelection, iconsSelection} from '../data/data';
 import {SelectionTagList} from './SelectionTagList';
-import {AvatarBtn} from './AvatarBtn';
+import {IconBtn} from './IconBtn';
 import {setActiveUser} from '../redux/slices/userInfoSlice';
 
 export const HomePage = ({navigation}) => {
@@ -106,14 +108,27 @@ export const HomePage = ({navigation}) => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', backAction);
     };
-  }, [backAction]);
+  }, []);
 
   return (
     <View style={styles.pageContainer}>
-      <AvatarBtn
-        userAvatar={activeUser?.avatar}
-        btnPressFunc={() => navigation.navigate('UserSettings')}
-      />
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <IconBtn
+          iconComp={
+            activeUser?.avatar ? (
+              <Image source={activeUser.avatar} />
+            ) : (
+              <FontAwesome6 name="circle-user" size={32} color="#e28533" />
+            )
+          }
+          btnPressFunc={() => navigation.navigate('UserSettings')}
+        />
+        <IconBtn
+          iconComp={<AntDesign name="logout" size={32} color="#e28533" />}
+          btnPressFunc={() => backAction()}
+        />
+      </View>
+
       <View>
         <Text
           style={[
