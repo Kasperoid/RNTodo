@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   addNewTodo,
   deleteTodo,
+  deleteTodoToTag,
   setActiveTodos,
   setSelectedTodo,
   toggleTodoChecked,
@@ -12,6 +13,8 @@ import {
 import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import uuid from 'react-native-uuid';
+import {ButtonUI} from './UI/ButtonUI';
+import {deleteTag} from '../redux/slices/tagsListSlice';
 
 export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {
@@ -34,6 +37,12 @@ export const TodosList = ({navigation}) => {
 
   const deleteTodoHandler = todoId => {
     dispatcher(deleteTodo(todoId));
+  };
+
+  const deleteTagBtnHandler = () => {
+    navigation.navigate('Home');
+    dispatcher(deleteTag(selectedTag));
+    dispatcher(deleteTodoToTag(selectedTag));
   };
 
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -122,6 +131,9 @@ export const TodosList = ({navigation}) => {
           </TouchableHighlight>
         </View>
       </ScrollView>
+      <ButtonUI type="Primary" onPressFunc={() => deleteTagBtnHandler()}>
+        Удалить категорию
+      </ButtonUI>
     </View>
   );
 };

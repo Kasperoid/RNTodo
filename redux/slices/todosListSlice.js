@@ -51,6 +51,12 @@ const todosListSlice = createSlice({
         ...state.todosList.filter(todo => todo.id !== action.payload),
       ];
     },
+
+    deleteTodoToTag(state, action) {
+      state.todosList = state.todosList.filter(
+        item => !item.tags.includes(action.payload),
+      );
+    },
   },
 });
 
@@ -61,5 +67,6 @@ export const {
   setSelectedTodo,
   setDescTodo,
   deleteTodo,
+  deleteTodoToTag,
 } = todosListSlice.actions;
 export default todosListSlice.reducer;
