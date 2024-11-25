@@ -30,35 +30,41 @@ export const TagsHomeList = ({onTagBtnHandler}) => {
               underlayColor={'#874f1e16'}
               onPress={() => onTagBtnHandler(item.id)}
               style={[{backgroundColor: 'white'}, styles.tagBtn]}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
+              <View>
                 <View
                   style={{
                     flex: 1,
+                    justifyContent: 'space-between',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,
                   }}>
-                  <AntDesign name={item.icon} size={16} color={item.color} />
-                  <Text
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontWeight: 600,
-                      color: 'black',
+                      flex: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 10,
                     }}>
-                    {item.title}
-                  </Text>
+                    <AntDesign name={item.icon} size={16} color={item.color} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 600,
+                        color: 'black',
+                      }}>
+                      {item.title}
+                    </Text>
+                  </View>
+                  <TouchableHighlight
+                    underlayColor={'inherit'}
+                    onPress={() => deleteTagBtnHandler(item.id)}>
+                    <AntDesign name="closecircle" size={17} color="#e28533" />
+                  </TouchableHighlight>
                 </View>
-                <TouchableHighlight
-                  underlayColor={'inherit'}
-                  onPress={() => deleteTagBtnHandler(item.id)}>
-                  <AntDesign name="closecircle" size={17} color="#e28533" />
-                </TouchableHighlight>
+                <View style={styles.separator} />
+                <Text style={[styles.commonText, {textAlign: 'center'}]}>
+                  Всего задач: {item.todosCount}
+                </Text>
               </View>
             </TouchableHighlight>
           )}

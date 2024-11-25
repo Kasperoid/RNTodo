@@ -27,7 +27,7 @@ export const todosData = [
     userId: 102,
     title: 'et porro tempora',
     completed: true,
-    tags: [112, 110],
+    tags: [112],
   },
   {
     id: Math.round(Math.random() * 100),
@@ -45,6 +45,7 @@ export const tagsData = [
     title: 'Избранное',
     color: 'red',
     icon: 'tag',
+    todosCount: 1,
   },
   {
     id: 111,
@@ -52,6 +53,7 @@ export const tagsData = [
     title: 'Работа',
     color: 'black',
     icon: 'meho',
+    todosCount: 1,
   },
   {
     id: 112,
@@ -59,6 +61,7 @@ export const tagsData = [
     title: 'Учеба',
     color: 'blue',
     icon: 'book',
+    todosCount: 2,
   },
   {
     id: 113,
@@ -66,6 +69,7 @@ export const tagsData = [
     title: 'Прочее',
     color: 'orange',
     icon: 'cloud',
+    todosCount: 0,
   },
   {
     id: 114,
@@ -73,6 +77,7 @@ export const tagsData = [
     title: 'Задачи',
     color: 'yellow',
     icon: 'questioncircle',
+    todosCount: 1,
   },
 ];
 

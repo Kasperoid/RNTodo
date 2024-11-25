@@ -14,7 +14,11 @@ import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import uuid from 'react-native-uuid';
 import {ButtonUI} from './UI/ButtonUI';
-import {deleteTag} from '../redux/slices/tagsListSlice';
+import {
+  addCountTodo,
+  deleteTag,
+  removeCountTodo,
+} from '../redux/slices/tagsListSlice';
 
 export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {
@@ -28,6 +32,7 @@ export const TodosList = ({navigation}) => {
     dispatcher(addNewTodo(newTodoObj));
     setNewTodoInput('');
     setIsOpenAddModal(false);
+    dispatcher(addCountTodo());
   };
 
   const selectTodoHandler = todoId => {
@@ -37,6 +42,7 @@ export const TodosList = ({navigation}) => {
 
   const deleteTodoHandler = todoId => {
     dispatcher(deleteTodo(todoId));
+    dispatcher(removeCountTodo());
   };
 
   const deleteTagBtnHandler = () => {

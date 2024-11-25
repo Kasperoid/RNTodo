@@ -16,15 +16,15 @@ import uuid from 'react-native-uuid';
 
 export const BottomMenu = () => {
   const addBtnClickHandler = () => {
-    dispatch(
-      addNewTag({
-        id: uuid.v4(),
-        title: tagInput,
-        userId: activeUser.id,
-        color: selectColorTag,
-        icon: selectIconTag,
-      }),
-    );
+    const newTagObj = {
+      id: uuid.v4(),
+      title: tagInput,
+      userId: activeUser.id,
+      color: selectColorTag,
+      icon: selectIconTag,
+      todosCount: 0,
+    };
+    dispatch(addNewTag(newTagObj));
     setTagInput('');
   };
 

@@ -28,9 +28,43 @@ const tagsListSlice = createSlice({
     deleteTag(state, action) {
       state.tags = state.tags.filter(item => item.id !== action.payload);
     },
+
+    addCountTodo(state) {
+      state.tags = [
+        ...state.tags.map(tag => {
+          if (tag.id === state.selectedTag) {
+            return {
+              ...tag,
+              todosCount: tag.todosCount + 1,
+            };
+          }
+          return {...tag};
+        }),
+      ];
+    },
+
+    removeCountTodo(state) {
+      state.tags = [
+        ...state.tags.map(tag => {
+          if (tag.id === state.selectedTag) {
+            return {
+              ...tag,
+              todosCount: tag.todosCount - 1,
+            };
+          }
+          return {...tag};
+        }),
+      ];
+    },
   },
 });
 
-export const {addNewTag, setActiveTags, setSelectedTag, deleteTag} =
-  tagsListSlice.actions;
+export const {
+  addNewTag,
+  setActiveTags,
+  setSelectedTag,
+  deleteTag,
+  addCountTodo,
+  removeCountTodo,
+} = tagsListSlice.actions;
 export default tagsListSlice.reducer;
