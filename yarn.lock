@@ -1048,20 +1048,7 @@
     "@babel/parser" "^7.25.9"
     "@babel/types" "^7.25.9"
 
-"@babel/traverse--for-generate-function-map@npm:@babel/traverse@^7.25.3":
-  version "7.25.9"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.25.9.tgz#a50f8fe49e7f69f53de5bea7e413cd35c5e13c84"
-  integrity sha512-ZCuvfwOwlz/bawvAuvcj8rrithP2/N55Tzz342AkTvq4qaWbGfmCk/tKhNaV2cthijKrPAA8SRJV5WWe7IBMJw==
-  dependencies:
-    "@babel/code-frame" "^7.25.9"
-    "@babel/generator" "^7.25.9"
-    "@babel/parser" "^7.25.9"
-    "@babel/template" "^7.25.9"
-    "@babel/types" "^7.25.9"
-    debug "^4.3.1"
-    globals "^11.1.0"
-
-"@babel/traverse@^7.25.3", "@babel/traverse@^7.25.9":
+"@babel/traverse--for-generate-function-map@npm:@babel/traverse@^7.25.3", "@babel/traverse@^7.25.3", "@babel/traverse@^7.25.9":
   version "7.25.9"
   resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.25.9.tgz#a50f8fe49e7f69f53de5bea7e413cd35c5e13c84"
   integrity sha512-ZCuvfwOwlz/bawvAuvcj8rrithP2/N55Tzz342AkTvq4qaWbGfmCk/tKhNaV2cthijKrPAA8SRJV5WWe7IBMJw==
@@ -1992,6 +1979,63 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@supabase/auth-js@2.65.1":
+  version "2.65.1"
+  resolved "https://registry.yarnpkg.com/@supabase/auth-js/-/auth-js-2.65.1.tgz#4f6ab9ece2e6613d2648ecf5482800f3766479ea"
+  integrity sha512-IA7i2Xq2SWNCNMKxwmPlHafBQda0qtnFr8QnyyBr+KaSxoXXqEzFCnQ1dGTy6bsZjVBgXu++o3qrDypTspaAPw==
+  dependencies:
+    "@supabase/node-fetch" "^2.6.14"
+
+"@supabase/functions-js@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@supabase/functions-js/-/functions-js-2.4.3.tgz#ac1c696d3a1ebe00f60d5cea69b208078678ef8b"
+  integrity sha512-sOLXy+mWRyu4LLv1onYydq+10mNRQ4rzqQxNhbrKLTLTcdcmS9hbWif0bGz/NavmiQfPs4ZcmQJp4WqOXlR4AQ==
+  dependencies:
+    "@supabase/node-fetch" "^2.6.14"
+
+"@supabase/node-fetch@2.6.15", "@supabase/node-fetch@^2.6.14":
+  version "2.6.15"
+  resolved "https://registry.yarnpkg.com/@supabase/node-fetch/-/node-fetch-2.6.15.tgz#731271430e276983191930816303c44159e7226c"
+  integrity sha512-1ibVeYUacxWYi9i0cf5efil6adJ9WRyZBLivgjs+AUpewx1F3xPi7gLgaASI2SmIQxPoCEjAsLAzKPgMJVgOUQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+"@supabase/postgrest-js@1.16.3":
+  version "1.16.3"
+  resolved "https://registry.yarnpkg.com/@supabase/postgrest-js/-/postgrest-js-1.16.3.tgz#d8e009e63b9152e46715982a6d706f1450c0af0d"
+  integrity sha512-HI6dsbW68AKlOPofUjDTaosiDBCtW4XAm0D18pPwxoW3zKOE2Ru13Z69Wuys9fd6iTpfDViNco5sgrtnP0666A==
+  dependencies:
+    "@supabase/node-fetch" "^2.6.14"
+
+"@supabase/realtime-js@2.10.7":
+  version "2.10.7"
+  resolved "https://registry.yarnpkg.com/@supabase/realtime-js/-/realtime-js-2.10.7.tgz#9e0cbecdffbfda3ae94639dbe0e55b06c6f79290"
+  integrity sha512-OLI0hiSAqQSqRpGMTUwoIWo51eUivSYlaNBgxsXZE7PSoWh12wPRdVt0psUMaUzEonSB85K21wGc7W5jHnT6uA==
+  dependencies:
+    "@supabase/node-fetch" "^2.6.14"
+    "@types/phoenix" "^1.5.4"
+    "@types/ws" "^8.5.10"
+    ws "^8.14.2"
+
+"@supabase/storage-js@2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@supabase/storage-js/-/storage-js-2.7.1.tgz#761482f237deec98a59e5af1ace18c7a5e0a69af"
+  integrity sha512-asYHcyDR1fKqrMpytAS1zjyEfvxuOIp1CIXX7ji4lHHcJKqyk+sLl/Vxgm4sN6u8zvuUtae9e4kDxQP2qrwWBA==
+  dependencies:
+    "@supabase/node-fetch" "^2.6.14"
+
+"@supabase/supabase-js@^2.46.1":
+  version "2.46.1"
+  resolved "https://registry.yarnpkg.com/@supabase/supabase-js/-/supabase-js-2.46.1.tgz#4d23cdf7b6aab45686dfe87577ca7d1371afd341"
+  integrity sha512-HiBpd8stf7M6+tlr+/82L8b2QmCjAD8ex9YdSAKU+whB/SHXXJdus1dGlqiH9Umy9ePUuxaYmVkGd9BcvBnNvg==
+  dependencies:
+    "@supabase/auth-js" "2.65.1"
+    "@supabase/functions-js" "2.4.3"
+    "@supabase/node-fetch" "2.6.15"
+    "@supabase/postgrest-js" "1.16.3"
+    "@supabase/realtime-js" "2.10.7"
+    "@supabase/storage-js" "2.7.1"
+
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"
@@ -2075,6 +2119,11 @@
   dependencies:
     undici-types "~6.19.8"
 
+"@types/phoenix@^1.5.4":
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/@types/phoenix/-/phoenix-1.6.6.tgz#3c1ab53fd5a23634b8e37ea72ccacbf07fbc7816"
+  integrity sha512-PIzZZlEppgrpoT2QgbnDU+MMzuR6BbCjllj0bM70lWoejMeNJAxCchxnv7J3XFkI8MpygtRpzXrIlmWUBclP5A==
+
 "@types/prop-types@*":
   version "15.7.13"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.13.tgz#2af91918ee12d9d32914feb13f5326658461b451"
@@ -2109,6 +2158,13 @@
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
   integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
+
+"@types/ws@^8.5.10":
+  version "8.5.13"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.5.13.tgz#6414c280875e2691d0d1e080b05addbf5cb91e20"
+  integrity sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==
+  dependencies:
+    "@types/node" "*"
 
 "@types/yargs-parser@*":
   version "21.0.3"
@@ -2660,7 +2716,7 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
-buffer@^5.5.0:
+buffer@^5.4.3, buffer@^5.5.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.7.1.tgz#ba62e7c13133053582197160851a8f648e99eed0"
   integrity sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
@@ -4987,6 +5043,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-react-native@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-7.1.0.tgz#705d1f7603b7a1b3d0cf0b4bb9a193d0dba4efa4"
+  integrity sha512-73jtQySxRZ8KTTSKf6CtcpCt8tpOCw4NRiCST4HTYgXlycxIihIp89jRcK8rS/QiBKl5bzyixMzpVmd4mYVH5Q==
+
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-5.1.1.tgz#1da27e6710271947695daf6848e847f01d84b920"
@@ -5741,7 +5802,7 @@ prop-types@^15.7.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-punycode@^2.1.0:
+punycode@^2.1.0, punycode@^2.1.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
   integrity sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==
@@ -5850,6 +5911,13 @@ react-native-sqlite-storage@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-6.0.1.tgz#ce6a6b852f07abbea68658d5363818c8bef45dfb"
   integrity sha512-1tDFjrint6X6qSYKf3gDyz+XB+X79jfiL6xTugKHPRtF0WvqMtVgdLuNqZunIXjNEvNtNVEbXaeZ6MsguFu00A==
+
+react-native-url-polyfill@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-url-polyfill/-/react-native-url-polyfill-2.0.0.tgz#db714520a2985cff1d50ab2e66279b9f91ffd589"
+  integrity sha512-My330Do7/DvKnEvwQc0WdcBnFPploYKp9CYlefDXzIdEaA+PAhDYllkvGeEroEzvc4Kzzj2O4yVdz8v6fjRvhA==
+  dependencies:
+    whatwg-url-without-unicode "8.0.0-3"
 
 react-native-uuid@^2.0.3:
   version "2.0.3"
@@ -6872,10 +6940,24 @@ webidl-conversions@^3.0.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-3.0.1.tgz#24534275e2a7bc6be7bc86611cc16ae0a5654871"
   integrity sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==
 
+webidl-conversions@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-5.0.0.tgz#ae59c8a00b121543a2acc65c0434f57b0fc11aff"
+  integrity sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA==
+
 whatwg-fetch@^3.0.0:
   version "3.6.20"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.6.20.tgz#580ce6d791facec91d37c72890995a0b48d31c70"
   integrity sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==
+
+whatwg-url-without-unicode@8.0.0-3:
+  version "8.0.0-3"
+  resolved "https://registry.yarnpkg.com/whatwg-url-without-unicode/-/whatwg-url-without-unicode-8.0.0-3.tgz#ab6df4bf6caaa6c85a59f6e82c026151d4bb376b"
+  integrity sha512-HoKuzZrUlgpz35YO27XgD28uh/WJH4B0+3ttFqRo//lmq+9T/mIOJ6kqmINI9HpUpz1imRC/nR/lxKpJiv0uig==
+  dependencies:
+    buffer "^5.4.3"
+    punycode "^2.1.1"
+    webidl-conversions "^5.0.0"
 
 whatwg-url@^5.0.0:
   version "5.0.0"
@@ -7003,6 +7085,11 @@ ws@^7, ws@^7.5.10:
   version "7.5.10"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.10.tgz#58b5c20dc281633f6c19113f39b349bd8bd558d9"
   integrity sha512-+dbF1tHwZpXcbOJdVOkzLDxZP1ailvSxM6ZweXTegylPny803bFhA+vqBYw4s31NSAk4S2Qz+AKXK9a4wkdjcQ==
+
+ws@^8.14.2:
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
+  integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
 xtend@~4.0.1:
   version "4.0.2"
