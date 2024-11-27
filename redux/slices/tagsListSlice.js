@@ -1,32 +1,71 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {tagsData} from '../../data/data';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {supabase} from '../store';
+
+export const getTags = createAsyncThunk(
+  'gettags/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      let {data: tags, error} = await supabase
+        .from('users')
+        .select(
+          `
+    tags (
+      *
+    )
+  `,
+        )
+        .single()
+        .eq('id', params);
+
+      if (error) throw 'Возникла ошибка!';
+      return tags.tags;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const setTag = createAsyncThunk(
+  'settag/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {data, error} = await supabase
+        .from('tags')
+        .insert([params])
+        .select();
+      if (error) throw 'Возникла непредвиденная ошибка!';
+      return data;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const delTag = createAsyncThunk(
+  'dettag/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {error} = await supabase.from('tags').delete().eq('id', params);
+
+      if (error) throw 'Возникла ошибка на сервере';
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
 
 const initialState = {
-  tags: tagsData,
   activeTags: [],
   selectedTag: null,
+  isLoading: false,
 };
 
 const tagsListSlice = createSlice({
   name: 'tagsList',
   initialState: initialState,
   reducers: {
-    addNewTag(state, action) {
-      state.tags = [...state.tags, action.payload];
-    },
-
-    setActiveTags(state, action) {
-      state.activeTags = state.tags.filter(
-        tag => tag.userId === action.payload,
-      );
-    },
-
     setSelectedTag(state, action) {
       state.selectedTag = action.payload;
-    },
-
-    deleteTag(state, action) {
-      state.tags = state.tags.filter(item => item.id !== action.payload);
     },
 
     addCountTodo(state) {
@@ -57,14 +96,24 @@ const tagsListSlice = createSlice({
       ];
     },
   },
+  extraReducers: builder => {
+    builder.addCase(getTags.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(getTags.fulfilled, (state, action) => {
+      state.activeTags = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(setTag.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(setTag.fulfilled, state => {
+      state.isLoading = false;
+    });
+  },
 });
 
-export const {
-  addNewTag,
-  setActiveTags,
-  setSelectedTag,
-  deleteTag,
-  addCountTodo,
-  removeCountTodo,
-} = tagsListSlice.actions;
+export const {setSelectedTag, addCountTodo, removeCountTodo} =
+  tagsListSlice.actions;
 export default tagsListSlice.reducer;

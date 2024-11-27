@@ -10,21 +10,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {SelectionTagList} from './SelectionTagList';
 import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewTag} from '../redux/slices/tagsListSlice';
+import {getTags, setTag} from '../redux/slices/tagsListSlice';
 import {colorsSelection, iconsSelection} from '../data/data';
-import uuid from 'react-native-uuid';
 
 export const BottomMenu = () => {
   const addBtnClickHandler = () => {
     const newTagObj = {
-      id: uuid.v4(),
       title: tagInput,
-      userId: activeUser.id,
+      usersid: activeUser.id,
       color: selectColorTag,
       icon: selectIconTag,
-      todosCount: 0,
     };
-    dispatch(addNewTag(newTagObj));
+    dispatch(setTag(newTagObj));
+    dispatch(getTags(activeUser.id));
     setTagInput('');
   };
 

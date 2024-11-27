@@ -3,13 +3,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../styles/styles';
-import {deleteTag} from '../redux/slices/tagsListSlice';
-import {deleteTodoToTag} from '../redux/slices/todosListSlice';
+import {delTag} from '../redux/slices/tagsListSlice';
 
 export const TagsHomeList = ({onTagBtnHandler}) => {
   const deleteTagBtnHandler = idTag => {
-    dispatcher(deleteTag(idTag));
-    dispatcher(deleteTodoToTag(idTag));
+    dispatcher(delTag(idTag));
   };
 
   const dispatcher = useDispatch();
@@ -63,7 +61,7 @@ export const TagsHomeList = ({onTagBtnHandler}) => {
                 </View>
                 <View style={styles.separator} />
                 <Text style={[styles.commonText, {textAlign: 'center'}]}>
-                  Всего задач: {item.todosCount}
+                  Всего задач: {item.todoscount}
                 </Text>
               </View>
             </TouchableHighlight>
