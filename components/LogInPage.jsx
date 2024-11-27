@@ -4,71 +4,54 @@ import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
 import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewUser, setActiveUser} from '../redux/slices/userInfoSlice';
-import uuid from 'react-native-uuid';
+import {clearError, getUser, setUser} from '../redux/slices/userInfoSlice';
+import LottieView from 'lottie-react-native';
 
 export function LogInPage({navigation}) {
   const dispatch = useDispatch();
-  const {users} = useSelector(state => state.userInfo);
+  const {isLoading, isError} = useSelector(state => state.userInfo);
   const [logInInput, setLoginInput] = useState('');
   const [pswdInput, setPswdInput] = useState('');
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  function isRuEmail(str) {
-    var emailText = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.ru$/);
-    return emailText.test(str);
-  }
-
-  function isExistsUser(login, pswd) {
-    const result = users.filter(
-      item => item.login === login && item.pass === pswd,
-    );
-    return result.length === 0 ? false : result[0];
-  }
 
   function logBtnHandler() {
-    const activeUser = isExistsUser(logInInput, pswdInput);
-    if (activeUser) {
-      setIsError(false);
-      dispatch(setActiveUser(activeUser));
+    dispatch(getUser({login: logInInput, pass: pswdInput}));
+    if (!isError) {
       setLoginInput('');
       setPswdInput('');
       navigation.navigate('Home');
-    } else {
-      setErrorMessage('Неверный логин или пароль');
-      setIsError(true);
     }
   }
 
   function createBtnHandler() {
-    if (isRuEmail(logInInput)) {
-      setIsError(false);
-      const newUser = {
-        id: uuid.v4(),
-        pass: pswdInput,
-        login: logInInput,
-      };
-      dispatch(addNewUser(newUser));
-      dispatch(setActiveUser(newUser));
-      setLoginInput('');
+    dispatch(setUser({login: logInInput, pass: pswdInput}));
+    setLoginInput('');
+    if (!isError) {
       setPswdInput('');
       navigation.navigate('Home');
-    } else {
-      setIsError(true);
-      setErrorMessage('Введите корректный e-mail');
     }
   }
 
   return (
     <View style={[styles.pageContainer, styles.pageContainerItemCenter]}>
       <ModalInfoWindow
-        isOpened={isError}
-        setCloseFunc={() => setIsError(false)}
-        message={errorMessage}
+        isOpened={Boolean(isError)}
+        setCloseFunc={() => dispatch(clearError())}
+        message={isError}
         title={'Ошибка'}
       />
-      <View style={styles.logInContainer}>
+      <View style={[styles.logInContainer]}>
+        {isLoading && (
+          <View style={styles.loadingBackdrop}>
+            <View style={{alignItems: 'center'}}>
+              <LottieView
+                source={require('../animation/loading/loadingAnim.json')}
+                autoPlay
+                loop
+                style={{width: 220, height: 220}}
+              />
+            </View>
+          </View>
+        )}
         <Text
           style={[
             styles.titleH1,
