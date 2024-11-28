@@ -117,8 +117,25 @@ export const BottomMenu = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <AntDesign name={selectIconTag} size={64} color={selectColorTag} />
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              borderRightWidth: 0.5,
+              borderColor: '#e28533',
+            }}>
+            <View>
+              <Text style={[styles.commonText, {color: '#e28533'}]}>
+                Ваша иконка
+              </Text>
+            </View>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <AntDesign
+                name={selectIconTag}
+                size={64}
+                color={selectColorTag}
+              />
+            </View>
           </View>
           <View style={{flex: 1}}>
             <SelectionTagList
