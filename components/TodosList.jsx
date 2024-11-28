@@ -3,7 +3,7 @@ import {ScrollView, View, Text, TouchableHighlight} from 'react-native';
 import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  changeCompleteTodo,
+  changeTodo,
   delTodo,
   getTodos,
   setSelectedTodo,
@@ -56,26 +56,24 @@ export const TodosList = ({navigation}) => {
   };
 
   const btnChangeHandler = (todoId, todoCompleted) => {
-    dispatcher(changeCompleteTodo({id: todoId, completed: !todoCompleted}));
+    dispatcher(changeTodo({id: todoId, update: {completed: !todoCompleted}}));
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const tags = supabase
-        .channel('public:todos')
-        .on(
-          'postgres_changes',
-          {event: '*', schema: 'public', table: 'todos'},
-          () => {
-            dispatcher(getTodos(selectedTag.id));
-          },
-        )
-        .subscribe();
-      return () => {
-        tags.unsubscribe();
-      };
-    }, [selectedTag, dispatcher]),
-  );
+  useEffect(() => {
+    const todos = supabase
+      .channel('public:todos')
+      .on(
+        'postgres_changes',
+        {event: '*', schema: 'public', table: 'todos'},
+        () => {
+          dispatcher(getTodos(selectedTag.id));
+        },
+      )
+      .subscribe();
+    return () => {
+      todos.unsubscribe();
+    };
+  }, [selectedTag, dispatcher]);
 
   useEffect(() => {
     dispatcher(getTodos(selectedTag.id));

@@ -1,41 +1,71 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
 import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput} from 'react-native-gesture-handler';
 import {ButtonUI} from './UI/ButtonUI';
-import {deleteTodo, setDescTodo} from '../redux/slices/todosListSlice';
-import {removeCountTodo} from '../redux/slices/tagsListSlice';
+import {changeTodo, delTodo, getTodo} from '../redux/slices/todosListSlice';
+import {changeTag} from '../redux/slices/tagsListSlice';
+import {LoadingWindow} from './UI/LoadingWindow';
+import {supabase} from '../redux/store';
 
 export const TodoDescPage = ({navigation}) => {
   const confirmBtnHandler = () => {
-    dispatch(setDescTodo(inputDescValue));
+    dispatch(
+      changeTodo({
+        id: selectedTodo.id,
+        update: {description: inputDescValue},
+      }),
+    );
     setIsOpenInput(false);
   };
 
   const cancelBtnHandler = () => {
     setIsOpenInput(prevState => !prevState);
-    setInputDescValue(selectedTodo?.desc || '');
+    setInputDescValue(selectedTodo.description || '');
   };
 
   const deleteTagBtnHandler = () => {
-    dispatch(deleteTodo(selectedTodo.id));
-    dispatch(removeCountTodo());
+    dispatch(delTodo(selectedTodo.id));
+    dispatch(
+      changeTag({
+        id: selectedTag.id,
+        update: {todoscount: selectedTag.todoscount},
+      }),
+    );
     navigation.navigate('TodosList');
   };
 
+  useEffect(() => {
+    const todos = supabase
+      .channel('public:todos')
+      .on(
+        'postgres_changes',
+        {event: '*', schema: 'public', table: 'todos'},
+        () => {
+          dispatch(getTodo(selectedTodo.id));
+        },
+      )
+      .subscribe();
+    return () => {
+      todos.unsubscribe();
+    };
+  }, [dispatch, selectedTodo]);
+
   const dispatch = useDispatch();
 
-  const {selectedTodo} = useSelector(state => state.todosList);
+  const {selectedTodo, isLoading} = useSelector(state => state.todosList);
+  const {selectedTag} = useSelector(state => state.tagsList);
 
   const [activeBtn, setActiveBtn] = useState(false);
   const [inputDescValue, setInputDescValue] = useState(
-    selectedTodo?.desc || '',
+    selectedTodo.description || '',
   );
   const [isOpenInput, setIsOpenInput] = useState(false);
   return (
     <View style={styles.pageContainer}>
+      {isLoading && <LoadingWindow />}
       <View style={{flex: 1}}>
         <Text style={[styles.titleH1, {textAlign: 'center', marginBottom: 0}]}>
           {selectedTodo.title}
@@ -65,9 +95,9 @@ export const TodoDescPage = ({navigation}) => {
               </ButtonUI>
             </View>
           </View>
-        ) : selectedTodo?.desc ? (
+        ) : selectedTodo.description ? (
           <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            <Text style={styles.commonText}>{selectedTodo.desc}</Text>
+            <Text style={styles.commonText}>{selectedTodo.description}</Text>
             <TouchableHighlight
               underlayColor={null}
               onPress={() => setIsOpenInput(prevState => !prevState)}

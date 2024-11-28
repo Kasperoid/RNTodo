@@ -17,13 +17,30 @@ export const getTodos = createAsyncThunk(
   },
 );
 
-export const changeCompleteTodo = createAsyncThunk(
+export const getTodo = createAsyncThunk(
+  'gettodo/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      let {data: todo, error} = await supabase
+        .from('todos')
+        .select('*')
+        .eq('id', params)
+        .single();
+      if (error) throw 'Возникла ошибка на сервере!';
+      return todo;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const changeTodo = createAsyncThunk(
   'changeCompleteTodo/fetch',
   async function (params, {rejectWithValue}) {
     try {
       const {error} = await supabase
         .from('todos')
-        .update({completed: params.completed})
+        .update(params.update)
         .eq('id', params.id);
       if (error) throw 'Возникла ошибка на сервере!';
     } catch (e) {
@@ -72,15 +89,8 @@ const todosListSlice = createSlice({
         todo => todo.id === action.payload,
       )[0];
     },
-
-    setDescTodo(state, action) {
-      state.selectedTodo = {...state.selectedTodo, desc: action.payload};
-      state.todosList = [
-        ...state.todosList.filter(todo => todo.id !== state.selectedTodo.id),
-        state.selectedTodo,
-      ];
-    },
   },
+
   extraReducers: builder => {
     builder.addCase(getTodos.pending, state => {
       state.isLoading = true;
@@ -96,7 +106,15 @@ const todosListSlice = createSlice({
     builder.addCase(setTodo.fulfilled, state => {
       state.isLoading = false;
     });
+
+    builder.addCase(getTodo.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(getTodo.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.selectedTodo = action.payload;
+    });
   },
 });
-export const {setSelectedTodo, setDescTodo} = todosListSlice.actions;
+export const {setSelectedTodo} = todosListSlice.actions;
 export default todosListSlice.reducer;
