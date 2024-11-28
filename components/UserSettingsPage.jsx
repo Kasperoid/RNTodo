@@ -1,25 +1,45 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
 import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {ModalInput} from './ModalInput';
-import {setUserNickname} from '../redux/slices/userInfoSlice';
+import {changeUserNick, getUser} from '../redux/slices/userInfoSlice';
+import {LoadingWindow} from './UI/LoadingWindow';
+import {useFocusEffect} from '@react-navigation/native';
+import {supabase} from '../redux/store';
 
 export const UserSettingsPage = () => {
   const addNicknameBtnHandler = () => {
+    dispatch(changeUserNick({id: activeUser.id, nickname: inputNickName}));
     setIsOpenModal(false);
-    dispatch(setUserNickname(inputNickName));
+    setInputNickName('');
   };
   const dispatch = useDispatch();
-  const {activeUser} = useSelector(store => store.userInfo);
+  const {activeUser, isLoading} = useSelector(store => store.userInfo);
   const [activeBtn, setActiveBtn] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [inputNickName, setInputNickName] = useState('');
-  const nickNameText = activeUser.nickName || '-';
+
+  useFocusEffect(
+    useCallback(() => {
+      const tags = supabase
+        .channel('public:users')
+        .on(
+          'postgres_changes',
+          {event: '*', schema: 'public', table: 'users'},
+          () => {
+            dispatch(getUser({id: activeUser.id}));
+          },
+        )
+        .subscribe();
+      return () => tags.unsubscribe();
+    }, [dispatch, activeUser.id]),
+  );
   return (
     <View style={styles.pageContainer}>
+      {isLoading && <LoadingWindow />}
       <ModalInput
         isOpened={isOpenModal}
         setCloseFunc={() => setIsOpenModal(false)}
@@ -45,7 +65,9 @@ export const UserSettingsPage = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <Text style={styles.commonText}>Nickname: {nickNameText}</Text>
+              <Text style={styles.commonText}>
+                Nickname: {activeUser.nickname || '-'}
+              </Text>
               <TouchableHighlight
                 underlayColor={null}
                 onPressIn={() => setActiveBtn(true)}

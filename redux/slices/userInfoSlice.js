@@ -51,6 +51,23 @@ export const setUser = createAsyncThunk(
   },
 );
 
+export const changeUserNick = createAsyncThunk(
+  'changeUserNick/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {data, error} = await supabase
+        .from('users')
+        .update({nickname: params.nickname})
+        .eq('id', params.id)
+        .select();
+      if (error) throw 'Возникла ошибка на сервере!';
+      return data;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
 const initialState = {
   activeUser: null,
   isLoading: false,
@@ -61,16 +78,6 @@ const userInfoSlice = createSlice({
   name: 'userInfo',
   initialState: initialState,
   reducers: {
-    addNewUser(state, action) {
-      state.users = [...state.users, action.payload];
-    },
-    setUserNickname(state, action) {
-      state.activeUser = {...state.activeUser, nickName: action.payload};
-      state.users = [
-        ...state.users.filter(user => user.id !== state.activeUser.id),
-        state.activeUser,
-      ];
-    },
     clearError(state) {
       state.isError = false;
     },
@@ -101,8 +108,20 @@ const userInfoSlice = createSlice({
       state.isError = action.payload;
       state.isLoading = false;
     });
+
+    builder.addCase(changeUserNick.pending, state => {
+      state.isLoading = true;
+      state.isError = false;
+    });
+    builder.addCase(changeUserNick.fulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addCase(changeUserNick.rejected, (state, action) => {
+      state.isError = true;
+      state.isLoading = false;
+    });
   },
 });
 
-export const {addNewUser, setUserNickname, clearError} = userInfoSlice.actions;
+export const {clearError} = userInfoSlice.actions;
 export default userInfoSlice.reducer;
