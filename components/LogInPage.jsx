@@ -5,7 +5,7 @@ import {ModalInfoWindow} from './ModalInfoWindow';
 import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearError, getUser, setUser} from '../redux/slices/userInfoSlice';
-import LottieView from 'lottie-react-native';
+import {LoadingWindow} from './UI/LoadingWindow';
 
 export function LogInPage({navigation}) {
   const dispatch = useDispatch();
@@ -40,18 +40,7 @@ export function LogInPage({navigation}) {
         title={'Ошибка'}
       />
       <View style={[styles.logInContainer]}>
-        {isLoading && (
-          <View style={styles.loadingBackdrop}>
-            <View style={{alignItems: 'center'}}>
-              <LottieView
-                source={require('../animation/loading/loadingAnim.json')}
-                autoPlay
-                loop
-                style={{width: 220, height: 220}}
-              />
-            </View>
-          </View>
-        )}
+        {isLoading && <LoadingWindow />}
         <Text
           style={[
             styles.titleH1,

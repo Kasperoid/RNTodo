@@ -11,7 +11,7 @@ import {BottomMenu} from './BottomMenu';
 import {useFocusEffect} from '@react-navigation/native';
 import {TagsHomeList} from './TagsHomeList';
 import {supabase} from '../redux/store';
-import LottieView from 'lottie-react-native';
+import {LoadingWindow} from './UI/LoadingWindow';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -45,19 +45,21 @@ export const HomePage = ({navigation}) => {
     dispatch(getTags(activeUser?.id));
   }, [dispatch, activeUser?.id]);
 
-  useEffect(() => {
-    const tags = supabase
-      .channel('public:tags')
-      .on(
-        'postgres_changes',
-        {event: '*', schema: 'public', table: 'tags'},
-        () => {
-          dispatch(getTags(activeUser?.id));
-        },
-      )
-      .subscribe();
-    return () => tags.unsubscribe();
-  }, [dispatch, activeUser?.id]);
+  useFocusEffect(
+    useCallback(() => {
+      const tags = supabase
+        .channel('public:tags')
+        .on(
+          'postgres_changes',
+          {event: '*', schema: 'public', table: 'tags'},
+          () => {
+            dispatch(getTags(activeUser?.id));
+          },
+        )
+        .subscribe();
+      return () => tags.unsubscribe();
+    }, [dispatch, activeUser?.id]),
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -97,18 +99,7 @@ export const HomePage = ({navigation}) => {
           Добро пожаловать, {visibleName}!
         </Text>
       </View>
-      {isLoading && (
-        <View style={styles.loadingBackdrop}>
-          <View style={{alignItems: 'center'}}>
-            <LottieView
-              source={require('../animation/loading/loadingAnim.json')}
-              autoPlay
-              loop
-              style={{width: 220, height: 220}}
-            />
-          </View>
-        </View>
-      )}
+      {isLoading && <LoadingWindow />}
       <TagsHomeList onTagBtnHandler={onTagBtnHandler} />
       <BottomMenu />
     </View>
