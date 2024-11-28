@@ -1,38 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, View, Text, TouchableHighlight} from 'react-native';
 import {styles} from '../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  addNewTodo,
-  deleteTodo,
-  deleteTodoToTag,
-  setActiveTodos,
+  changeCompleteTodo,
+  delTodo,
+  getTodos,
   setSelectedTodo,
-  toggleTodoChecked,
+  setTodo,
 } from '../redux/slices/todosListSlice';
 import {ModalInput} from './ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import uuid from 'react-native-uuid';
 import {ButtonUI} from './UI/ButtonUI';
-import {
-  addCountTodo,
-  deleteTag,
-  removeCountTodo,
-} from '../redux/slices/tagsListSlice';
+import {changeTag, delTag} from '../redux/slices/tagsListSlice';
+import {useFocusEffect} from '@react-navigation/native';
+import {supabase} from '../redux/store';
+import {LoadingWindow} from './UI/LoadingWindow';
 
 export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {
     const newTodoObj = {
-      id: uuid.v4(),
-      userId: activeUser.id,
+      userid: activeUser.id,
       title: newTodoInput,
-      completed: false,
-      tags: [selectedTag],
+      tagid: selectedTag.id,
     };
-    dispatcher(addNewTodo(newTodoObj));
+    dispatcher(setTodo(newTodoObj));
     setNewTodoInput('');
     setIsOpenAddModal(false);
-    dispatcher(addCountTodo());
+    dispatcher(
+      changeTag({
+        id: selectedTag.id,
+        update: {todoscount: selectedTag.todoscount + 1},
+      }),
+    );
   };
 
   const selectTodoHandler = todoId => {
@@ -41,29 +41,56 @@ export const TodosList = ({navigation}) => {
   };
 
   const deleteTodoHandler = todoId => {
-    dispatcher(deleteTodo(todoId));
-    dispatcher(removeCountTodo());
+    dispatcher(delTodo(todoId));
+    dispatcher(
+      changeTag({
+        id: selectedTag.id,
+        update: {todoscount: selectedTag.todoscount - 1},
+      }),
+    );
   };
 
   const deleteTagBtnHandler = () => {
     navigation.navigate('Home');
-    dispatcher(deleteTag(selectedTag));
-    dispatcher(deleteTodoToTag(selectedTag));
+    dispatcher(delTag(selectedTag.id));
   };
+
+  const btnChangeHandler = (todoId, todoCompleted) => {
+    dispatcher(changeCompleteTodo({id: todoId, completed: !todoCompleted}));
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      const tags = supabase
+        .channel('public:todos')
+        .on(
+          'postgres_changes',
+          {event: '*', schema: 'public', table: 'todos'},
+          () => {
+            dispatcher(getTodos(selectedTag.id));
+          },
+        )
+        .subscribe();
+      return () => {
+        tags.unsubscribe();
+      };
+    }, [selectedTag, dispatcher]),
+  );
+
+  useEffect(() => {
+    dispatcher(getTodos(selectedTag.id));
+  }, [dispatcher, selectedTag]);
 
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
   const [newTodoInput, setNewTodoInput] = useState('');
 
-  const {activeTodos, todosList} = useSelector(state => state.todosList);
+  const {activeTodos, isLoading} = useSelector(state => state.todosList);
   const {selectedTag} = useSelector(state => state.tagsList);
   const {activeUser} = useSelector(store => store.userInfo);
   const dispatcher = useDispatch();
-
-  useEffect(() => {
-    dispatcher(setActiveTodos(selectedTag));
-  }, [dispatcher, selectedTag, todosList]);
   return (
     <View style={[{flex: 1}, styles.pageContainer]}>
+      {isLoading && <LoadingWindow />}
       <ModalInput
         isOpened={isOpenAddModal}
         setCloseFunc={() => setIsOpenAddModal(false)}
@@ -83,7 +110,7 @@ export const TodosList = ({navigation}) => {
                 <TouchableHighlight
                   style={styles.buttonCheckedContainer}
                   underlayColor={'inherit'}
-                  onPress={() => dispatcher(toggleTodoChecked(item.id))}>
+                  onPress={() => btnChangeHandler(item.id, item.completed)}>
                   <View style={{width: 15, height: 15}}>
                     {item.completed && (
                       <AntDesign name="check" size={16} color="#e28533" />

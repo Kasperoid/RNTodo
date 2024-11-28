@@ -11,11 +11,10 @@ import {useFocusEffect} from '@react-navigation/native';
 import {TagsHomeList} from './TagsHomeList';
 import {supabase} from '../redux/store';
 import {LoadingWindow} from './UI/LoadingWindow';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
-    dispatch(setSelectedTag(tagId));
+    dispatch(setSelectedTag(activeTags.filter(todo => todo.id === tagId)[0]));
     navigation.navigate('TodosList');
   };
 
@@ -24,7 +23,6 @@ export const HomePage = ({navigation}) => {
       {
         text: 'Да',
         onPress: () => {
-          AsyncStorage.clear();
           navigation.navigate('LogIn');
         },
       },
@@ -50,28 +48,28 @@ export const HomePage = ({navigation}) => {
 
   const dispatch = useDispatch();
   const {activeUser} = useSelector(store => store.userInfo);
-  const {isLoading} = useSelector(store => store.tagsList);
+  const {isLoading: isLoadingTag, activeTags} = useSelector(
+    store => store.tagsList,
+  );
   const visibleName = activeUser?.nickname || activeUser?.login;
 
   useEffect(() => {
     dispatch(getTags(activeUser?.id));
   }, [dispatch, activeUser?.id]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const tags = supabase
-        .channel('public:tags')
-        .on(
-          'postgres_changes',
-          {event: '*', schema: 'public', table: 'tags'},
-          () => {
-            dispatch(getTags(activeUser?.id));
-          },
-        )
-        .subscribe();
-      return () => tags.unsubscribe();
-    }, [dispatch, activeUser?.id]),
-  );
+  useEffect(() => {
+    const tags = supabase
+      .channel('public:tags')
+      .on(
+        'postgres_changes',
+        {event: '*', schema: 'public', table: 'tags'},
+        () => {
+          dispatch(getTags(activeUser?.id));
+        },
+      )
+      .subscribe();
+    return () => tags.unsubscribe();
+  }, [dispatch, activeUser?.id]);
 
   useFocusEffect(
     useCallback(() => {
@@ -111,7 +109,7 @@ export const HomePage = ({navigation}) => {
           Добро пожаловать, {visibleName}!
         </Text>
       </View>
-      {isLoading && <LoadingWindow />}
+      {isLoadingTag && <LoadingWindow />}
       <TagsHomeList onTagBtnHandler={onTagBtnHandler} />
       <BottomMenu />
     </View>

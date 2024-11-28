@@ -42,12 +42,28 @@ export const setTag = createAsyncThunk(
 );
 
 export const delTag = createAsyncThunk(
-  'dettag/fetch',
+  'deltag/fetch',
   async function (params, {rejectWithValue}) {
     try {
       const {error} = await supabase.from('tags').delete().eq('id', params);
 
       if (error) throw 'Возникла ошибка на сервере';
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const changeTag = createAsyncThunk(
+  'changeTag/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {error} = await supabase
+        .from('tags')
+        .update(params.update)
+        .eq('id', params.id);
+
+      if (error) throw 'Возникла ошибка на сервере!';
     } catch (e) {
       return rejectWithValue(e);
     }
@@ -67,34 +83,6 @@ const tagsListSlice = createSlice({
     setSelectedTag(state, action) {
       state.selectedTag = action.payload;
     },
-
-    addCountTodo(state) {
-      state.tags = [
-        ...state.tags.map(tag => {
-          if (tag.id === state.selectedTag) {
-            return {
-              ...tag,
-              todosCount: tag.todosCount + 1,
-            };
-          }
-          return {...tag};
-        }),
-      ];
-    },
-
-    removeCountTodo(state) {
-      state.tags = [
-        ...state.tags.map(tag => {
-          if (tag.id === state.selectedTag) {
-            return {
-              ...tag,
-              todosCount: tag.todosCount - 1,
-            };
-          }
-          return {...tag};
-        }),
-      ];
-    },
   },
   extraReducers: builder => {
     builder.addCase(getTags.pending, state => {
@@ -111,9 +99,15 @@ const tagsListSlice = createSlice({
     builder.addCase(setTag.fulfilled, state => {
       state.isLoading = false;
     });
+
+    builder.addCase(delTag.pending, state => {
+      state.isLoading = true;
+    }),
+      builder.addCase(delTag.fulfilled, state => {
+        state.isLoading = false;
+      });
   },
 });
 
-export const {setSelectedTag, addCountTodo, removeCountTodo} =
-  tagsListSlice.actions;
+export const {setSelectedTag, removeCountTodo} = tagsListSlice.actions;
 export default tagsListSlice.reducer;

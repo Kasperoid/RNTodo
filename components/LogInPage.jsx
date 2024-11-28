@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {styles} from '../styles/styles';
 import {ModalInfoWindow} from './ModalInfoWindow';
@@ -6,6 +6,8 @@ import {ButtonUI} from './UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearError, getUser, setUser} from '../redux/slices/userInfoSlice';
 import {LoadingWindow} from './UI/LoadingWindow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 export function LogInPage({navigation}) {
   const dispatch = useDispatch();
@@ -30,6 +32,12 @@ export function LogInPage({navigation}) {
       navigation.navigate('Home');
     }
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.clear();
+    }, []),
+  );
 
   return (
     <View style={[styles.pageContainer, styles.pageContainerItemCenter]}>

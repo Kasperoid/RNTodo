@@ -1,37 +1,72 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {todosData} from '../../data/data';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {supabase} from '../store';
+
+export const getTodos = createAsyncThunk(
+  'gettodos/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      let {data: todos, error} = await supabase
+        .from('todos')
+        .select('*')
+        .eq('tagid', params);
+      if (error) throw 'Возникла ошибка на сервере!';
+      return todos;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const changeCompleteTodo = createAsyncThunk(
+  'changeCompleteTodo/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {error} = await supabase
+        .from('todos')
+        .update({completed: params.completed})
+        .eq('id', params.id);
+      if (error) throw 'Возникла ошибка на сервере!';
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const delTodo = createAsyncThunk(
+  'delTodo/fetch',
+  async function (param, {rejectWithValue}) {
+    try {
+      const {error} = await supabase.from('todos').delete().eq('id', param);
+      if (error) throw 'Ошибка на сервере!';
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const setTodo = createAsyncThunk(
+  'setTodo/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {error} = await supabase.from('todos').insert([params]);
+      if (error) throw 'Ошибка на сервере!';
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
 
 const initialState = {
-  todosList: todosData,
   activeTodos: [],
+  localChangeTodos: [],
   selectedTodo: null,
+  isLoading: false,
 };
+
 const todosListSlice = createSlice({
   name: 'todosList',
   initialState: initialState,
   reducers: {
-    toggleTodoChecked(state, action) {
-      state.todosList = state.todosList.map(item => {
-        if (item.id === action.payload) {
-          return {
-            ...item,
-            completed: !item.completed,
-          };
-        }
-        return {...item};
-      });
-    },
-
-    addNewTodo(state, action) {
-      state.todosList = [...state.todosList, action.payload];
-    },
-
-    setActiveTodos(state, action) {
-      state.activeTodos = state.todosList.filter(todo =>
-        todo.tags.includes(action.payload),
-      );
-    },
-
     setSelectedTodo(state, action) {
       state.selectedTodo = state.activeTodos.filter(
         todo => todo.id === action.payload,
@@ -45,28 +80,23 @@ const todosListSlice = createSlice({
         state.selectedTodo,
       ];
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(getTodos.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(getTodos.fulfilled, (state, action) => {
+      state.activeTodos = action.payload;
+      state.isLoading = false;
+    });
 
-    deleteTodo(state, action) {
-      state.todosList = [
-        ...state.todosList.filter(todo => todo.id !== action.payload),
-      ];
-    },
-
-    deleteTodoToTag(state, action) {
-      state.todosList = state.todosList.filter(
-        item => !item.tags.includes(action.payload),
-      );
-    },
+    builder.addCase(setTodo.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(setTodo.fulfilled, state => {
+      state.isLoading = false;
+    });
   },
 });
-
-export const {
-  toggleTodoChecked,
-  addNewTodo,
-  setActiveTodos,
-  setSelectedTodo,
-  setDescTodo,
-  deleteTodo,
-  deleteTodoToTag,
-} = todosListSlice.actions;
+export const {setSelectedTodo, setDescTodo} = todosListSlice.actions;
 export default todosListSlice.reducer;
