@@ -6,12 +6,12 @@ import {getTags, setSelectedTag} from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {IconBtn} from './IconBtn';
-import {setActiveUser} from '../redux/slices/userInfoSlice';
 import {BottomMenu} from './BottomMenu';
 import {useFocusEffect} from '@react-navigation/native';
 import {TagsHomeList} from './TagsHomeList';
 import {supabase} from '../redux/store';
 import {LoadingWindow} from './UI/LoadingWindow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -20,13 +20,25 @@ export const HomePage = ({navigation}) => {
   };
 
   const exitBtnHandler = useCallback(() => {
-    navigation.navigate('LogIn');
-    dispatch(setActiveUser(null));
-  }, [navigation, dispatch]);
+    Alert.alert('Стойте!', 'Вы действительно хотите выйти из аккаунта?', [
+      {
+        text: 'Да',
+        onPress: () => {
+          AsyncStorage.clear();
+          navigation.navigate('LogIn');
+        },
+      },
+      {
+        text: 'Нет',
+        onPress: () => null,
+        style: 'cancel',
+      },
+    ]);
+  }, [navigation]);
 
   const backAction = useCallback(() => {
-    Alert.alert('Стойте!', 'Вы действительно хотите выйти?', [
-      {text: 'Да', onPress: exitBtnHandler},
+    Alert.alert('Стойте!', 'Вы действительно хотите выйти из приложения?', [
+      {text: 'Да', onPress: BackHandler.exitApp},
       {
         text: 'Нет',
         onPress: () => null,
@@ -34,7 +46,7 @@ export const HomePage = ({navigation}) => {
       },
     ]);
     return true;
-  }, [exitBtnHandler]);
+  }, []);
 
   const dispatch = useDispatch();
   const {activeUser} = useSelector(store => store.userInfo);
@@ -85,7 +97,7 @@ export const HomePage = ({navigation}) => {
         />
         <IconBtn
           iconComp={<AntDesign name="logout" size={32} color="#e28533" />}
-          btnPressFunc={() => backAction()}
+          btnPressFunc={() => exitBtnHandler()}
         />
       </View>
       <View>
