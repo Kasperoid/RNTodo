@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {supabase} from '../store';
+import {decode} from 'base64-arraybuffer';
 
 export const getUser = createAsyncThunk(
   'getusers/fetch',
@@ -68,8 +69,55 @@ export const changeUserNick = createAsyncThunk(
   },
 );
 
+export const uploadAvatar = createAsyncThunk(
+  'uploadAvatar/fetch',
+  async function (params, {rejectWithValue}) {
+    const {data, error} = await supabase.storage
+      .from('users')
+      .upload(`avatars/${params.userId}.${params.ext}`, decode(params.data), {
+        contentType: params.mime,
+        upsert: true,
+      });
+    if (error) {
+      console.log(error);
+    } else {
+      return data;
+    }
+  },
+);
+
+export const downloadAvatar = createAsyncThunk(
+  'downloadAvatar/fetch',
+  async function (params, {rejectWithValue}) {
+    let {data, error} = await supabase.storage
+      .from('users')
+      .download(`avatars/${params.userId}.jpg`);
+    if (error) {
+      return null;
+    } else if (data) {
+      try {
+        return new Promise((res, rej) => {
+          const fr = new FileReader();
+          fr.readAsDataURL(data);
+          fr.onload = function () {
+            res(fr.result);
+          };
+          fr.onerror = function () {
+            rej('error');
+          };
+        });
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  },
+);
+
 const initialState = {
   activeUser: null,
+  activeUserAvatar: null,
   isLoading: false,
   isError: false,
 };
@@ -116,9 +164,25 @@ const userInfoSlice = createSlice({
     builder.addCase(changeUserNick.fulfilled, state => {
       state.isLoading = false;
     });
-    builder.addCase(changeUserNick.rejected, (state, action) => {
+    builder.addCase(changeUserNick.rejected, state => {
       state.isError = true;
       state.isLoading = false;
+    });
+
+    builder.addCase(uploadAvatar.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(uploadAvatar.fulfilled, state => {
+      state.isLoading = false;
+    });
+
+    builder.addCase(downloadAvatar.pending, state => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(downloadAvatar.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.activeUserAvatar = action.payload;
     });
   },
 });

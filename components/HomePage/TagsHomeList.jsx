@@ -13,7 +13,10 @@ export const TagsHomeList = ({onTagBtnHandler}) => {
   const dispatcher = useDispatch();
   const {activeTags} = useSelector(store => store.tagsList);
   return (
-    <View>
+    <View
+      style={{
+        alignItems: activeTags && activeTags.length !== 0 ? 'none' : 'center',
+      }}>
       {activeTags && activeTags.length !== 0 ? (
         <FlatList
           data={activeTags}

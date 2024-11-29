@@ -16,7 +16,7 @@ export function LogInPage({navigation}) {
   const [pswdInput, setPswdInput] = useState('');
 
   function logBtnHandler() {
-    dispatch(getUser({login: logInInput, pass: pswdInput}));
+    dispatch(getUser({login: logInInput.trim(), pass: pswdInput.trim()}));
     if (!isError) {
       setLoginInput('');
       setPswdInput('');

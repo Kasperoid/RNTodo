@@ -16,6 +16,7 @@ import {supabase} from '../../redux/store';
 import {LoadingWindow} from '../UI/LoadingWindow';
 import {IconBtn} from '../UI/IconBtn';
 import {ButtonUI} from '../UI/ButtonUI';
+import {downloadAvatar} from '../../redux/slices/userInfoSlice';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -52,14 +53,14 @@ export const HomePage = ({navigation}) => {
   }, []);
 
   const dispatch = useDispatch();
-  const {activeUser} = useSelector(store => store.userInfo);
+  const {activeUser, activeUserAvatar} = useSelector(store => store.userInfo);
   const {isLoading: isLoadingTag, activeTags} = useSelector(
     store => store.tagsList,
   );
   const visibleName = activeUser?.nickname || activeUser?.login;
 
   useEffect(() => {
-    dispatch(getTags(activeUser?.id));
+    dispatch(getTags(activeUser.id));
   }, [dispatch, activeUser?.id]);
 
   useEffect(() => {
@@ -96,8 +97,11 @@ export const HomePage = ({navigation}) => {
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <IconBtn
           iconComp={
-            activeUser?.avatar ? (
-              <Image source={activeUser.avatar} />
+            activeUserAvatar ? (
+              <Image
+                source={{uri: activeUserAvatar}}
+                style={{height: 32, width: 32, borderRadius: 15}}
+              />
             ) : (
               <FontAwesome6 name="circle-user" size={32} color="#e28533" />
             )
