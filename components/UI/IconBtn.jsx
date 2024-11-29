@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableHighlight, View} from 'react-native';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 
 export const IconBtn = ({iconComp, btnPressFunc}) => {
   return (

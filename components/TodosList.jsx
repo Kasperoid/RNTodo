@@ -16,6 +16,7 @@ import {changeTag, delTag} from '../redux/slices/tagsListSlice';
 import {useFocusEffect} from '@react-navigation/native';
 import {supabase} from '../redux/store';
 import {LoadingWindow} from './UI/LoadingWindow';
+import {IconBtn} from './UI/IconBtn';
 
 export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {
@@ -87,7 +88,7 @@ export const TodosList = ({navigation}) => {
   const {activeUser} = useSelector(store => store.userInfo);
   const dispatcher = useDispatch();
   return (
-    <View style={[{flex: 1}, styles.pageContainer]}>
+    <View style={[{flex: 1, gap: 15}, styles.pageContainer]}>
       {isLoading && <LoadingWindow />}
       <ModalInput
         isOpened={isOpenAddModal}
@@ -95,6 +96,10 @@ export const TodosList = ({navigation}) => {
         inputValue={newTodoInput}
         setChangeTextFunc={text => setNewTodoInput(text)}
         btnFuncHandler={() => btnAddTodoHandler()}
+      />
+      <IconBtn
+        iconComp={<AntDesign name="back" size={32} color="#e28533" />}
+        btnPressFunc={() => navigation.goBack()}
       />
       <ScrollView contentContainerStyle={{flex: 1, gap: 10}}>
         {activeTodos && activeTodos.length !== 0 ? (

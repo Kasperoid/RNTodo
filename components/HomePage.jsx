@@ -5,12 +5,12 @@ import {styles} from '../styles/styles';
 import {getTags, setSelectedTag} from '../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {IconBtn} from './IconBtn';
 import {BottomMenu} from './BottomMenu';
 import {useFocusEffect} from '@react-navigation/native';
 import {TagsHomeList} from './TagsHomeList';
 import {supabase} from '../redux/store';
 import {LoadingWindow} from './UI/LoadingWindow';
+import {IconBtn} from './UI/IconBtn';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {

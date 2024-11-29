@@ -9,6 +9,7 @@ import {changeTodo, delTodo, getTodo} from '../redux/slices/todosListSlice';
 import {changeTag} from '../redux/slices/tagsListSlice';
 import {LoadingWindow} from './UI/LoadingWindow';
 import {supabase} from '../redux/store';
+import {IconBtn} from './UI/IconBtn';
 
 export const TodoDescPage = ({navigation}) => {
   const confirmBtnHandler = () => {
@@ -64,8 +65,12 @@ export const TodoDescPage = ({navigation}) => {
   );
   const [isOpenInput, setIsOpenInput] = useState(false);
   return (
-    <View style={styles.pageContainer}>
+    <View style={[styles.pageContainer, {gap: 15}]}>
       {isLoading && <LoadingWindow />}
+      <IconBtn
+        iconComp={<AntDesign name="back" size={32} color="#e28533" />}
+        btnPressFunc={() => navigation.goBack()}
+      />
       <View style={{flex: 1}}>
         <Text style={[styles.titleH1, {textAlign: 'center', marginBottom: 0}]}>
           {selectedTodo.title}

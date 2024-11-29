@@ -9,8 +9,9 @@ import {changeUserNick, getUser} from '../redux/slices/userInfoSlice';
 import {LoadingWindow} from './UI/LoadingWindow';
 import {useFocusEffect} from '@react-navigation/native';
 import {supabase} from '../redux/store';
+import {IconBtn} from './UI/IconBtn';
 
-export const UserSettingsPage = () => {
+export const UserSettingsPage = ({navigation}) => {
   const addNicknameBtnHandler = () => {
     dispatch(changeUserNick({id: activeUser.id, nickname: inputNickName}));
     setIsOpenModal(false);
@@ -46,6 +47,10 @@ export const UserSettingsPage = () => {
         setChangeTextFunc={text => setInputNickName(text)}
         inputValue={inputNickName}
         btnFuncHandler={() => addNicknameBtnHandler()}
+      />
+      <IconBtn
+        iconComp={<AntDesign name="back" size={32} color="#e28533" />}
+        btnPressFunc={() => navigation.goBack()}
       />
       <View style={{gap: 15}}>
         <View
