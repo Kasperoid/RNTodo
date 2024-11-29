@@ -36,11 +36,19 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
+  titleH2: {
+    color: 'black',
+    fontWeight: 600,
+    fontSize: 22,
+    marginBottom: 14,
+  },
+
   inputTextCustom: {
     borderWidth: 1,
     borderColor: '#e28533',
     borderRadius: 10,
     paddingHorizontal: 20,
+    backgroundColor: 'white',
   },
 
   buttonTouchableContainer: {
@@ -113,7 +121,8 @@ export const styles = StyleSheet.create({
   },
 
   tagBtn: {
-    width: 150,
+    flex: 1,
+    minHeight: 50,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: '#e28533',

@@ -2,7 +2,11 @@ import React, {useCallback, useEffect} from 'react';
 import {Alert, BackHandler, Image, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/styles';
-import {getTags, setSelectedTag} from '../../redux/slices/tagsListSlice';
+import {
+  clearSelectedTag,
+  getTags,
+  setSelectedTag,
+} from '../../redux/slices/tagsListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {BottomMenu} from './BottomMenu';
@@ -11,6 +15,7 @@ import {TagsHomeList} from './TagsHomeList';
 import {supabase} from '../../redux/store';
 import {LoadingWindow} from '../UI/LoadingWindow';
 import {IconBtn} from '../UI/IconBtn';
+import {ButtonUI} from '../UI/ButtonUI';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -80,6 +85,12 @@ export const HomePage = ({navigation}) => {
     }, [backAction]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(clearSelectedTag());
+    }, [dispatch]),
+  );
+
   return (
     <View style={styles.pageContainer}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -93,6 +104,11 @@ export const HomePage = ({navigation}) => {
           }
           btnPressFunc={() => navigation.navigate('UserSettings')}
         />
+        <ButtonUI
+          type={'Primary'}
+          onPressFunc={() => navigation.navigate('CreateTodo')}>
+          Создать задачу
+        </ButtonUI>
         <IconBtn
           iconComp={<AntDesign name="logout" size={32} color="#e28533" />}
           btnPressFunc={() => exitBtnHandler()}

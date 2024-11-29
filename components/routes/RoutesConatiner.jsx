@@ -7,6 +7,7 @@ import {TodosList} from '../TodosPage/TodosList';
 import {UserSettingsPage} from '../UserPage/UserSettingsPage';
 import {useSelector} from 'react-redux';
 import {TodoDescPage} from './../TodoDescPage/TodoDescPage';
+import {TodoCreatePage} from '../TodoCreatePage/TodoCreatePage';
 
 export const RoutesContainer = () => {
   const {Navigator, Screen} = createStackNavigator();
@@ -38,6 +39,11 @@ export const RoutesContainer = () => {
           name="TodoDesc"
           options={{headerShown: false}}
           component={TodoDescPage}
+        />
+        <Screen
+          name="CreateTodo"
+          options={{headerShown: false}}
+          component={TodoCreatePage}
         />
       </Navigator>
     </NavigationContainer>

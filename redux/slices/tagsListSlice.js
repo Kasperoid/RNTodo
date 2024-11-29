@@ -83,6 +83,10 @@ const tagsListSlice = createSlice({
     setSelectedTag(state, action) {
       state.selectedTag = action.payload;
     },
+
+    clearSelectedTag(state) {
+      state.selectedTag = null;
+    },
   },
   extraReducers: builder => {
     builder.addCase(getTags.pending, state => {
@@ -109,5 +113,5 @@ const tagsListSlice = createSlice({
   },
 });
 
-export const {setSelectedTag, removeCountTodo} = tagsListSlice.actions;
+export const {setSelectedTag, clearSelectedTag} = tagsListSlice.actions;
 export default tagsListSlice.reducer;
