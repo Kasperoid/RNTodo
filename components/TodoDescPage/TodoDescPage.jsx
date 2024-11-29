@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput} from 'react-native-gesture-handler';
-import {ButtonUI} from './UI/ButtonUI';
-import {changeTodo, delTodo, getTodo} from '../redux/slices/todosListSlice';
-import {changeTag} from '../redux/slices/tagsListSlice';
-import {LoadingWindow} from './UI/LoadingWindow';
-import {supabase} from '../redux/store';
-import {IconBtn} from './UI/IconBtn';
+import {ButtonUI} from '../UI/ButtonUI';
+import {changeTodo, delTodo, getTodo} from '../../redux/slices/todosListSlice';
+import {changeTag} from '../../redux/slices/tagsListSlice';
+import {LoadingWindow} from '../UI/LoadingWindow';
+import {supabase} from '../../redux/store';
+import {IconBtn} from '../UI/IconBtn';
 
 export const TodoDescPage = ({navigation}) => {
   const confirmBtnHandler = () => {

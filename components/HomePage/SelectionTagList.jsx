@@ -2,7 +2,7 @@ import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import React from 'react';
 import {TouchableHighlight} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 
 export const SelectionTagList = ({data, setFunc, type, selectType}) => {
   return (

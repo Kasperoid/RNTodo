@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Modal, Text, TextInput, TouchableHighlight, View} from 'react-native';
-import {styles} from '../styles/styles';
-import {ButtonUI} from './UI/ButtonUI';
+import {styles} from '../../styles/styles';
+import {ButtonUI} from '../UI/ButtonUI';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const ModalInput = ({

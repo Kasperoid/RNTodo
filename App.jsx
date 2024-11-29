@@ -4,7 +4,7 @@ import store, {persistor} from './redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Text} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {RoutesContainer} from './components/RoutesConatiner';
+import {RoutesContainer} from './components/routes/RoutesConatiner';
 
 export default function App() {
   return (

@@ -1,15 +1,15 @@
 import React, {useCallback, useState} from 'react';
 import {Text, TouchableHighlight, View} from 'react-native';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import {ModalInput} from './ModalInput';
-import {changeUserNick, getUser} from '../redux/slices/userInfoSlice';
-import {LoadingWindow} from './UI/LoadingWindow';
+import {ModalInput} from '../UI/ModalInput';
+import {changeUserNick, getUser} from '../../redux/slices/userInfoSlice';
+import {LoadingWindow} from '../UI/LoadingWindow';
 import {useFocusEffect} from '@react-navigation/native';
-import {supabase} from '../redux/store';
-import {IconBtn} from './UI/IconBtn';
+import {supabase} from '../../redux/store';
+import {IconBtn} from '../UI/IconBtn';
 
 export const UserSettingsPage = ({navigation}) => {
   const addNicknameBtnHandler = () => {

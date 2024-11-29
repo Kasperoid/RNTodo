@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, View, Text} from 'react-native';
-import {styles} from '../styles/styles';
-import {ButtonUI} from './UI/ButtonUI';
+import {styles} from '../../styles/styles';
+import {ButtonUI} from '../UI/ButtonUI';
 
 export const ModalInfoWindow = ({isOpened, setCloseFunc, message, title}) => {
   return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {LogInPage} from './LogInPage';
-import {HomePage} from './HomePage';
-import {TodosList} from './TodosList';
-import {UserSettingsPage} from './UserSettingsPage';
+import {LogInPage} from '../LogInPage/LogInPage';
+import {HomePage} from '../HomePage/HomePage';
+import {TodosList} from '../TodosPage/TodosList';
+import {UserSettingsPage} from '../UserPage/UserSettingsPage';
 import {useSelector} from 'react-redux';
-import {TodoDescPage} from './TodoDescPage';
+import {TodoDescPage} from './../TodoDescPage/TodoDescPage';
 
 export const RoutesContainer = () => {
   const {Navigator, Screen} = createStackNavigator();

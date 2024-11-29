@@ -2,8 +2,8 @@ import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {FlatList, Text, TouchableHighlight, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {styles} from '../styles/styles';
-import {delTag} from '../redux/slices/tagsListSlice';
+import {styles} from '../../styles/styles';
+import {delTag} from '../../redux/slices/tagsListSlice';
 
 export const TagsHomeList = ({onTagBtnHandler}) => {
   const deleteTagBtnHandler = idTag => {

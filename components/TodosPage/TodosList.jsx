@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, View, Text, TouchableHighlight} from 'react-native';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   changeTodo,
@@ -8,15 +8,14 @@ import {
   getTodos,
   setSelectedTodo,
   setTodo,
-} from '../redux/slices/todosListSlice';
-import {ModalInput} from './ModalInput';
+} from '../../redux/slices/todosListSlice';
+import {ModalInput} from '../UI/ModalInput';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {ButtonUI} from './UI/ButtonUI';
-import {changeTag, delTag} from '../redux/slices/tagsListSlice';
-import {useFocusEffect} from '@react-navigation/native';
-import {supabase} from '../redux/store';
-import {LoadingWindow} from './UI/LoadingWindow';
-import {IconBtn} from './UI/IconBtn';
+import {ButtonUI} from '../UI/ButtonUI';
+import {changeTag, delTag} from '../../redux/slices/tagsListSlice';
+import {supabase} from '../../redux/store';
+import {LoadingWindow} from '../UI/LoadingWindow';
+import {IconBtn} from '../UI/IconBtn';
 
 export const TodosList = ({navigation}) => {
   const btnAddTodoHandler = () => {

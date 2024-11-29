@@ -5,13 +5,13 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import React, {useCallback, useRef, useState} from 'react';
 import {TouchableHighlight, View, Text} from 'react-native';
-import {styles} from '../styles/styles';
+import {styles} from '../../styles/styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {SelectionTagList} from './SelectionTagList';
-import {ButtonUI} from './UI/ButtonUI';
+import {ButtonUI} from '../UI/ButtonUI';
 import {useDispatch, useSelector} from 'react-redux';
-import {getTags, setTag} from '../redux/slices/tagsListSlice';
-import {colorsSelection, iconsSelection} from '../data/data';
+import {getTags, setTag} from '../../redux/slices/tagsListSlice';
+import {colorsSelection, iconsSelection} from '../../data/data';
 
 export const BottomMenu = () => {
   const addBtnClickHandler = () => {
