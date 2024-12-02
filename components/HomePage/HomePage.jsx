@@ -17,6 +17,11 @@ import {LoadingWindow} from '../UI/LoadingWindow';
 import {IconBtn} from '../UI/IconBtn';
 import {ButtonUI} from '../UI/ButtonUI';
 import {downloadAvatar} from '../../redux/slices/userInfoSlice';
+import {
+  clearNewTodoId,
+  setNewTodoImgSettings,
+  uploadTodoImg,
+} from '../../redux/slices/todosListSlice';
 
 export const HomePage = ({navigation}) => {
   const onTagBtnHandler = tagId => {
@@ -53,6 +58,7 @@ export const HomePage = ({navigation}) => {
   }, []);
 
   const dispatch = useDispatch();
+  const {newTodoId, newTodoImgSettings} = useSelector(state => state.todosList);
   const {activeUser, activeUserAvatar} = useSelector(store => store.userInfo);
   const {isLoading: isLoadingTag, activeTags} = useSelector(
     store => store.tagsList,
@@ -90,7 +96,12 @@ export const HomePage = ({navigation}) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(clearSelectedTag());
-    }, [dispatch]),
+      if (newTodoId) {
+        dispatch(uploadTodoImg({todoId: newTodoId, ...newTodoImgSettings}));
+        dispatch(setNewTodoImgSettings(null));
+        dispatch(clearNewTodoId());
+      }
+    }, [dispatch, newTodoId, newTodoImgSettings]),
   );
 
   return (

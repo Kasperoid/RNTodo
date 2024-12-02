@@ -1,23 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {ScrollView, View, Text, TouchableHighlight} from 'react-native';
 import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   changeTodo,
+  clearNewTodoId,
   delTodo,
   getTodos,
+  setNewTodoImgSettings,
   setSelectedTodo,
+  uploadTodoImg,
 } from '../../redux/slices/todosListSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {ButtonUI} from '../UI/ButtonUI';
-import {
-  changeTag,
-  clearSelectedTag,
-  delTag,
-} from '../../redux/slices/tagsListSlice';
+import {changeTag, delTag} from '../../redux/slices/tagsListSlice';
 import {supabase} from '../../redux/store';
 import {LoadingWindow} from '../UI/LoadingWindow';
 import {IconBtn} from '../UI/IconBtn';
+import {useFocusEffect} from '@react-navigation/native';
 
 export const TodosList = ({navigation}) => {
   const selectTodoHandler = todoId => {
@@ -44,11 +44,6 @@ export const TodosList = ({navigation}) => {
     dispatcher(changeTodo({id: todoId, update: {completed: !todoCompleted}}));
   };
 
-  const backBtnHandler = () => {
-    navigation.goBack();
-    dispatcher(clearSelectedTag());
-  };
-
   useEffect(() => {
     const todos = supabase
       .channel('public:todos')
@@ -69,7 +64,19 @@ export const TodosList = ({navigation}) => {
     dispatcher(getTodos(selectedTag.id));
   }, [dispatcher, selectedTag]);
 
-  const {activeTodos, isLoading} = useSelector(state => state.todosList);
+  useFocusEffect(
+    useCallback(() => {
+      if (newTodoId) {
+        dispatcher(uploadTodoImg({todoId: newTodoId, ...newTodoImgSettings}));
+        dispatcher(setNewTodoImgSettings(null));
+        dispatcher(clearNewTodoId());
+      }
+    }, [dispatcher, newTodoId, newTodoImgSettings]),
+  );
+
+  const {activeTodos, newTodoId, isLoading, newTodoImgSettings} = useSelector(
+    state => state.todosList,
+  );
   const {selectedTag} = useSelector(state => state.tagsList);
   const dispatcher = useDispatch();
   return (
