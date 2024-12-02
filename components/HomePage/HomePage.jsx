@@ -61,6 +61,7 @@ export const HomePage = ({navigation}) => {
 
   useEffect(() => {
     dispatch(getTags(activeUser.id));
+    dispatch(downloadAvatar({userId: activeUser.id}));
   }, [dispatch, activeUser?.id]);
 
   useEffect(() => {
@@ -94,7 +95,11 @@ export const HomePage = ({navigation}) => {
 
   return (
     <View style={styles.pageContainer}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
         <IconBtn
           iconComp={
             activeUserAvatar ? (

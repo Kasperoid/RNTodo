@@ -129,6 +129,9 @@ const userInfoSlice = createSlice({
     clearError(state) {
       state.isError = false;
     },
+    setUserAvatar(state, action) {
+      state.activeUserAvatar = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(getUser.pending, state => {
@@ -177,15 +180,15 @@ const userInfoSlice = createSlice({
     });
 
     builder.addCase(downloadAvatar.pending, state => {
-      state.isLoading = true;
+      // state.isLoading = true;
     });
 
     builder.addCase(downloadAvatar.fulfilled, (state, action) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.activeUserAvatar = action.payload;
     });
   },
 });
 
-export const {clearError} = userInfoSlice.actions;
+export const {clearError, setUserAvatar} = userInfoSlice.actions;
 export default userInfoSlice.reducer;

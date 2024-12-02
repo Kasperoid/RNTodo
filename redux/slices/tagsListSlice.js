@@ -5,7 +5,7 @@ export const getTags = createAsyncThunk(
   'gettags/fetch',
   async function (params, {rejectWithValue}) {
     try {
-      let {data: tags, error} = await supabase
+      const {data: tags, error} = await supabase
         .from('users')
         .select(
           `
