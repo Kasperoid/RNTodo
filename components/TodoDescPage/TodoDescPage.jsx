@@ -1,15 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {Text, TouchableHighlight, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, Text, TouchableHighlight, View} from 'react-native';
 import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TextInput} from 'react-native-gesture-handler';
 import {ButtonUI} from '../UI/ButtonUI';
-import {changeTodo, delTodo, getTodo} from '../../redux/slices/todosListSlice';
+import {
+  changeTodo,
+  delTodo,
+  delTodoImg,
+  downloadTodoImg,
+  getTodo,
+  uploadTodoImg,
+} from '../../redux/slices/todosListSlice';
 import {changeTag} from '../../redux/slices/tagsListSlice';
 import {LoadingWindow} from '../UI/LoadingWindow';
 import {supabase} from '../../redux/store';
 import {IconBtn} from '../UI/IconBtn';
+import {useFocusEffect} from '@react-navigation/native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export const TodoDescPage = ({navigation}) => {
   const confirmBtnHandler = () => {
@@ -38,6 +47,34 @@ export const TodoDescPage = ({navigation}) => {
     navigation.navigate('TodosList');
   };
 
+  const deleteImgHandler = () => {
+    dispatch(delTodoImg({todoId: selectedTodo.id}));
+    setLocalImg(null);
+  };
+
+  const changeImageTodo = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 250,
+      cropping: true,
+      includeBase64: true,
+    }).then(image => {
+      const fileData = image.data;
+      const fileExt = image.path.split('.').at(-1);
+      const mime = image.mime;
+      setLocalImg(image.path);
+      dispatch(
+        uploadTodoImg({
+          todoId: selectedTodo.id,
+          ext: fileExt,
+          data: fileData,
+          mime: mime,
+          path: image.path,
+        }),
+      );
+    });
+  };
+
   useEffect(() => {
     const todos = supabase
       .channel('public:todos')
@@ -54,9 +91,17 @@ export const TodoDescPage = ({navigation}) => {
     };
   }, [dispatch, selectedTodo]);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(downloadTodoImg({todoId: selectedTodo.id}));
+    }, [dispatch, selectedTodo]),
+  );
+
   const dispatch = useDispatch();
 
-  const {selectedTodo, isLoading} = useSelector(state => state.todosList);
+  const {selectedTodo, isLoading, todoImg} = useSelector(
+    state => state.todosList,
+  );
   const {selectedTag} = useSelector(state => state.tagsList);
 
   const [activeBtn, setActiveBtn] = useState(false);
@@ -64,6 +109,7 @@ export const TodoDescPage = ({navigation}) => {
     selectedTodo.description || '',
   );
   const [isOpenInput, setIsOpenInput] = useState(false);
+  const [localImg, setLocalImg] = useState(null);
   return (
     <View style={[styles.pageContainer, {gap: 15}]}>
       {isLoading && <LoadingWindow />}
@@ -125,6 +171,28 @@ export const TodoDescPage = ({navigation}) => {
               onPressOut={() => setActiveBtn(false)}>
               <Text style={{color: '#e28533', fontWeight: 700}}>Добавить?</Text>
             </TouchableHighlight>
+          </View>
+        )}
+        {todoImg && (
+          <View style={{alignItems: 'center', marginTop: 10, gap: 15}}>
+            <Image
+              style={{height: 250, width: 300}}
+              source={{uri: localImg || todoImg}}
+            />
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <ButtonUI
+                type={'Primary'}
+                style={{flex: 1}}
+                onPressFunc={() => changeImageTodo()}>
+                Изменить
+              </ButtonUI>
+              <ButtonUI
+                type={'Secondary'}
+                style={{flex: 1}}
+                onPressFunc={() => deleteImgHandler()}>
+                Удалить
+              </ButtonUI>
+            </View>
           </View>
         )}
       </View>

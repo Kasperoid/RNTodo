@@ -4,9 +4,9 @@ import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   changeTodo,
-  clearNewTodoId,
   delTodo,
   getTodos,
+  setNewTodoId,
   setNewTodoImgSettings,
   setSelectedTodo,
   uploadTodoImg,
@@ -69,7 +69,7 @@ export const TodosList = ({navigation}) => {
       if (newTodoId) {
         dispatcher(uploadTodoImg({todoId: newTodoId, ...newTodoImgSettings}));
         dispatcher(setNewTodoImgSettings(null));
-        dispatcher(clearNewTodoId());
+        dispatcher(setNewTodoId(null));
       }
     }, [dispatcher, newTodoId, newTodoImgSettings]),
   );

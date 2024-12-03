@@ -131,6 +131,19 @@ export const downloadTodoImg = createAsyncThunk(
   },
 );
 
+export const delTodoImg = createAsyncThunk(
+  'delTodoImg/fetch',
+  async function (params, {rejectWithValue}) {
+    try {
+      const {error} = await supabase.storage
+        .from('todos')
+        .remove([`pictures/${params.todoId}.jpg`]);
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
 const initialState = {
   activeTodos: [],
   localChangeTodos: [],
@@ -138,6 +151,7 @@ const initialState = {
   isLoading: false,
   newTodoId: null,
   newTodoImgSettings: null,
+  todoImg: null,
 };
 
 const todosListSlice = createSlice({
@@ -154,8 +168,8 @@ const todosListSlice = createSlice({
       state.newTodoImgSettings = action.payload;
     },
 
-    clearNewTodoId(state) {
-      state.newTodoId = null;
+    setNewTodoId(state, action) {
+      state.newTodoId = action.payload;
     },
   },
 
@@ -191,8 +205,26 @@ const todosListSlice = createSlice({
     builder.addCase(uploadTodoImg.fulfilled, state => {
       state.isLoading = false;
     });
+
+    builder.addCase(downloadTodoImg.pending, state => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(downloadTodoImg.fulfilled, (state, action) => {
+      state.todoImg = action.payload;
+      state.isLoading = false;
+    });
+
+    builder.addCase(delTodoImg.pending, state => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(delTodoImg.fulfilled, state => {
+      state.todoImg = null;
+      state.isLoading = false;
+    });
   },
 });
-export const {setSelectedTodo, setNewTodoImgSettings, clearNewTodoId} =
+export const {setSelectedTodo, setNewTodoImgSettings, setNewTodoId} =
   todosListSlice.actions;
 export default todosListSlice.reducer;

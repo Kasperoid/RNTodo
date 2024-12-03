@@ -19,6 +19,7 @@ import {ButtonUI} from '../UI/ButtonUI';
 import {downloadAvatar} from '../../redux/slices/userInfoSlice';
 import {
   clearNewTodoId,
+  setNewTodoId,
   setNewTodoImgSettings,
   uploadTodoImg,
 } from '../../redux/slices/todosListSlice';
@@ -99,7 +100,7 @@ export const HomePage = ({navigation}) => {
       if (newTodoId) {
         dispatch(uploadTodoImg({todoId: newTodoId, ...newTodoImgSettings}));
         dispatch(setNewTodoImgSettings(null));
-        dispatch(clearNewTodoId());
+        dispatch(setNewTodoId(null));
       }
     }, [dispatch, newTodoId, newTodoImgSettings]),
   );
