@@ -18,7 +18,6 @@ import {IconBtn} from '../UI/IconBtn';
 import {ButtonUI} from '../UI/ButtonUI';
 import {downloadAvatar} from '../../redux/slices/userInfoSlice';
 import {
-  clearNewTodoId,
   setNewTodoId,
   setNewTodoImgSettings,
   uploadTodoImg,

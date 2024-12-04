@@ -24,16 +24,17 @@ export const BottomMenu = () => {
     dispatch(setTag(newTagObj));
     dispatch(getTags(activeUser.id));
     setTagInput('');
+    setIsAnimate(true);
   };
 
   const openBottomMenuBtnHandler = () => {
     isBottomVisible
-      ? bottomMenuRef.current.snapToIndex(0)
-      : bottomMenuRef.current.expand();
-
-    isBottomVisible
       ? bottomInputRef.current.blur()
       : bottomInputRef.current.focus();
+
+    isBottomVisible
+      ? bottomMenuRef.current.snapToIndex(0)
+      : bottomMenuRef.current.expand();
 
     setIsBottomVisible(prevState => !prevState);
   };
@@ -62,13 +63,12 @@ export const BottomMenu = () => {
   );
 
   const dispatch = useDispatch();
-
   const {activeUser} = useSelector(store => store.userInfo);
-
   const [tagInput, setTagInput] = useState('');
   const [selectIconTag, setSelectIconTag] = useState('tag');
   const [selectColorTag, setSelectColorTag] = useState('grey');
   const [isBottomVisible, setIsBottomVisible] = useState(false);
+  const [isAnimate, setIsAnimate] = useState(false);
 
   const bottomMenuRef = useRef(null);
   const bottomInputRef = useRef(null);
@@ -153,7 +153,12 @@ export const BottomMenu = () => {
             />
           </View>
         </View>
-        <ButtonUI onPressFunc={() => addBtnClickHandler()} type="Primary">
+        <ButtonUI
+          isAnimate={isAnimate}
+          onPressFunc={() => addBtnClickHandler()}
+          setIsAnimate={setIsAnimate}
+          afterAnimateFunc={() => openBottomMenuBtnHandler()}
+          type="Primary">
           Добавить
         </ButtonUI>
       </BottomSheetView>
