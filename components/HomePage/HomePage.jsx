@@ -66,9 +66,11 @@ export const HomePage = ({navigation}) => {
   const visibleName = activeUser?.nickname || activeUser?.login;
 
   useEffect(() => {
-    dispatch(getTags(activeUser.id));
-    dispatch(downloadAvatar({userId: activeUser.id}));
-  }, [dispatch, activeUser?.id]);
+    if (activeUser) {
+      dispatch(getTags(activeUser.id));
+      dispatch(downloadAvatar({userId: activeUser.id}));
+    }
+  }, [dispatch, activeUser]);
 
   useEffect(() => {
     const tags = supabase
