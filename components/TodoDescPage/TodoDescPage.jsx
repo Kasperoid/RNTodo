@@ -1,5 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, Text, TouchableHighlight, View} from 'react-native';
+import {
+  Image,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {styles} from '../../styles/styles';
 import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -175,10 +181,18 @@ export const TodoDescPage = ({navigation}) => {
         )}
         {todoImg && (
           <View style={{alignItems: 'center', marginTop: 10, gap: 15}}>
-            <Image
-              style={{height: 250, width: 300}}
-              source={{uri: localImg || todoImg}}
-            />
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() =>
+                navigation.navigate('ModalImage', {
+                  img: localImg || todoImg,
+                })
+              }>
+              <Image
+                style={{height: 250, width: 300}}
+                source={{uri: localImg || todoImg}}
+              />
+            </TouchableOpacity>
             <View style={{flexDirection: 'row', gap: 10}}>
               <ButtonUI
                 type={'Primary'}

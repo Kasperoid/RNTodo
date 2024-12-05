@@ -66,10 +66,8 @@ export const HomePage = ({navigation}) => {
   const visibleName = activeUser?.nickname || activeUser?.login;
 
   useEffect(() => {
-    if (activeUser) {
-      dispatch(getTags(activeUser.id));
-      dispatch(downloadAvatar({userId: activeUser.id}));
-    }
+    dispatch(getTags(activeUser.id));
+    dispatch(downloadAvatar({userId: activeUser.id}));
   }, [dispatch, activeUser]);
 
   useEffect(() => {

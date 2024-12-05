@@ -8,6 +8,7 @@ import {UserSettingsPage} from '../UserPage/UserSettingsPage';
 import {useSelector} from 'react-redux';
 import {TodoDescPage} from './../TodoDescPage/TodoDescPage';
 import {TodoCreatePage} from '../TodoCreatePage/TodoCreatePage';
+import {ModalImage} from '../ModalImage/ModalImage';
 
 export const RoutesContainer = () => {
   const {Navigator, Screen} = createStackNavigator();
@@ -44,6 +45,11 @@ export const RoutesContainer = () => {
           name="CreateTodo"
           options={{headerShown: false}}
           component={TodoCreatePage}
+        />
+        <Screen
+          name="ModalImage"
+          options={{headerShown: false, presentation: 'transparentModal'}}
+          component={ModalImage}
         />
       </Navigator>
     </NavigationContainer>
