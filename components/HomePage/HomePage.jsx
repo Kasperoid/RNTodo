@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect} from 'react';
-import {Alert, BackHandler, Image, Text, View} from 'react-native';
+import {
+  Alert,
+  BackHandler,
+  Image,
+  NativeModules,
+  Text,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/styles';
 import {
@@ -24,6 +31,13 @@ import {
 } from '../../redux/slices/todosListSlice';
 
 export const HomePage = ({navigation}) => {
+  const {TestModule} = NativeModules;
+
+  const testHandler = async () => {
+    const resp = await TestModule.log();
+    console.log(resp);
+  };
+
   const onTagBtnHandler = tagId => {
     dispatch(setSelectedTag(activeTags.filter(todo => todo.id === tagId)[0]));
     navigation.navigate('TodosList');
@@ -147,6 +161,9 @@ export const HomePage = ({navigation}) => {
       </View>
       {isLoadingTag && <LoadingWindow />}
       <TagsHomeList onTagBtnHandler={onTagBtnHandler} />
+      <ButtonUI type="Primary" onPressFunc={() => testHandler()}>
+        Тест
+      </ButtonUI>
       <BottomMenu />
     </View>
   );
